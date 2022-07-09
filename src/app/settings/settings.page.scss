@@ -1,0 +1,40 @@
+@import url("../app.component.scss");
+
+.back {
+    overflow: hidden;
+    background-attachment: fixed;
+    overflow: scroll;
+    background-image: url("../../assets/backs/bg_notas.jpg");
+    height: 87vh;
+}
+
+.icon {
+    width: 90%;
+    height: 50%;
+}
+
+.back-info {
+    border-radius: 20px;
+    background: rgba(208, 181, 100, 0.604);
+}
+
+.connect {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.form {
+    max-width: 600px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    //transform: translate(-50%, -58%);
+}
+
+.info{
+    background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+    border-radius: 20px;
+}
