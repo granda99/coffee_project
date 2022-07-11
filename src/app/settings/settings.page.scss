@@ -3,9 +3,7 @@
 .back {
     overflow: hidden;
     background-attachment: fixed;
-    overflow: scroll;
     background-image: url("../../assets/backs/bg_notas.jpg");
-    height: 87vh;
 }
 
 .icon {
@@ -26,15 +24,8 @@
     color: red;
 }
 
-.form {
-    max-width: 600px;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    //transform: translate(-50%, -58%);
-}
-
 .info{
     background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
     border-radius: 20px;
+    margin: 0%;
 }

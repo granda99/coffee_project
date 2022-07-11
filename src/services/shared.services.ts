@@ -466,7 +466,11 @@ export class SharedService {
 
   getDateNow() {
     let fecha = new Date();
-    let all: number[] = [fecha.getDate(), fecha.getMonth() + 1, fecha.getFullYear()];
+    let all = {
+      fecha: fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear(),
+      hora: fecha.getHours() + ':' + fecha.getMinutes()
+    }
+
     return all;
   }
 

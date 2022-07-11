@@ -1,12 +1,15 @@
 .back {
-    background: rgb(255, 255, 255);
+    --background: transparent;
+    //background: rgb(255, 255, 255);
     background: linear-gradient(165deg, rgba(255, 255, 255, 1) 26%, rgba(208, 181, 100, 1) 40%);
     height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    overflow:hidden;
+    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .center-element {
@@ -125,6 +128,7 @@
 .native-input[disabled].sc-ion-input-md {
     opacity: 1 !important;
 }
+
 .native-input[disabled].sc-ion-input-ios {
     opacity: 1 !important;
 }
@@ -137,11 +141,11 @@
     border-right: 1px blue solid;
 }
 
-.black{
+.black {
     color: black;
 }
 
-.infoI{
+.infoI {
     color: var(--ion-color-infoButom);
     width: 90%;
     height: 50%;
@@ -152,3 +156,45 @@
         display: inherit;
     }
 }
+
+@media screen and (min-width:768px) {
+    .hidden {
+        display: inherit;
+    }
+
+    .data {
+        max-width: 500px !important;
+    }
+
+    .col {
+        min-width: 21% !important;
+    }
+}
+
+@media screen and (min-width:1000px) {
+    .col {
+        min-width: 31.5% !important;
+    }
+}
+
+ion-header{
+    min-height: 30px;
+    padding: 1%;
+}
+
+.float{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%);
+    z-index: 50;
+}
+
+ion-content {
+    --offset-bottom: auto!important;
+    --overflow: hidden;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }

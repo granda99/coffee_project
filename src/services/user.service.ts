@@ -43,7 +43,7 @@ export class UserService {
         try {
             const { user } = await this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
             await this.sendVerificationEmail();
-            this.updateUserData(user)
+            //this.updateUserData(user)
             return user;
         } catch (ex) {
             console.log('Error: ', ex);
@@ -91,14 +91,16 @@ export class UserService {
         }
     }
 
-    public updateUserData(user: User) {
+    public updateUserData(user: Datos) {
         const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-        const data: User = {
+        const data = {
             uid: user.uid,
             email: user.email,
             emailVerified: user.emailVerified,
             displayName: user.displayName,
-            photoURL: user.photoURL
+            photoURL: user.photoURL,
+            telf: user.telf,
+            fechaNacimiento: user.fechaNacimiento,
         }
 
         return userRef.set(data, { merge: true })
@@ -117,4 +119,14 @@ export interface User {
     emailVerified;
     displayName;
     photoURL;
+}
+
+export interface Datos {
+    uid;
+    email;
+    emailVerified;
+    displayName;
+    photoURL;
+    telf;
+    fechaNacimiento;
 }

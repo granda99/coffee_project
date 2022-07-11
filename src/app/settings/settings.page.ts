@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { nodoServices } from 'src/services/nodoServices';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
+import { NewDeviceComponent } from '../components/new-device/new-device.component';
 
 @Component({
   selector: 'app-settings',
@@ -113,6 +114,10 @@ export class SettingsPage implements OnInit {
   async doRefresh(ev) {
     await this.loadDevices();
     ev.target.complete();
+  }
+
+  showAddDevice(){
+    this.share.openModalPage(NewDeviceComponent);
   }
 
 }

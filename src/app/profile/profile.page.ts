@@ -21,6 +21,8 @@ export class ProfilePage implements OnInit {
   isEdit: Boolean = false;
   isDesck: Boolean = false;
 
+  showCalendar: boolean = false;
+
   constructor(
     private share: SharedService,
     private user: UserService,
@@ -72,8 +74,9 @@ export class ProfilePage implements OnInit {
       email: "",
       emailVerified: "",
       photoURL: "",
-      telf:"",
-      uid: ""
+      telf: "",
+      uid: "",
+      fechaNacimiento: "",
     }
   }
 
@@ -158,6 +161,18 @@ export class ProfilePage implements OnInit {
 
   logout() {
     this.share.logout();
+  }
+
+  showDatePick() {
+    if (this.isEdit)
+      this.showCalendar = true;
+    else
+      this.showCalendar = false;
+  }
+
+  selectDate() {
+    this.showCalendar = false;
+    this.infoUser.fechaNacimiento = this.share.toShortDate(this.infoUser.fechaNacimiento);
   }
 }
 
