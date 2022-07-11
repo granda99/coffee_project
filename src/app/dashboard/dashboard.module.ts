@@ -8,8 +8,11 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
 
+import { SwiperModule } from 'swiper/angular'
+
 @NgModule({
   imports: [
+    SwiperModule,
     CommonModule,
     FormsModule,
     IonicModule,

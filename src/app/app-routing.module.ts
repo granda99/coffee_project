@@ -27,7 +27,11 @@ const routes: Routes = [
   {
     path: 'welcome',
     loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule)
+  },  {
+    path: 'new-device',
+    loadChildren: () => import('./components/new-device/new-device.module').then( m => m.NewDevicePageModule)
   }
+
 ];
 @NgModule({
   imports: [

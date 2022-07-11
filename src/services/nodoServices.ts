@@ -15,6 +15,16 @@ export class nodoServices {
         this.url = environment.firebaseConfig.databaseURL;
     }
 
+    addNewDevice(data): Observable<any> {
+        const user = JSON.parse(sessionStorage.getItem('user'));
+        let uid = user.uid;
+        let token = user.stsTokenManager.accessToken;
+
+        const $URL = `${this.url}/dispositivos/${uid}.json`;
+
+        return this._http.post<any>($URL, data);
+    }
+
     getInformacion(): Observable<any> {
         const user = JSON.parse(sessionStorage.getItem('user'));
         let uid = user.uid;
@@ -35,12 +45,12 @@ export class nodoServices {
         return this._http.get<any>($URL);
     }
 
-    patchInfo(data, key): Observable<any> {
+    changeStatusDevice(data, key): Observable<any> {
         const user = JSON.parse(sessionStorage.getItem('user'));
         let uid = user.uid;
         let token = user.stsTokenManager.accessToken;
 
-        const $URL = `${this.url}/registro_nodos/${uid}/${key}.json`;
+        const $URL = `${this.url}/dispositivos/${uid}/${key}.json`;
 
         return this._http.patch<any>($URL, data);
     }

@@ -8,7 +8,7 @@
   </ion-row>
   <ion-row>
     <ion-col size="1" class="col"></ion-col>
-    <ion-col size="10" class="no_padding data">
+    <ion-col size="10" class="no_padding ">
       <ion-card class="info">
         <ion-row>
           <!-- CONFIGURATION TITLE -->
@@ -31,7 +31,7 @@
 
           <!-- KEY CONFIG -->
           <ion-col size="1" size-lg [hidden]="viewKey" class="hidden"></ion-col>
-          <ion-col size="10" size-lg class="center back-info" [hidden]="viewKey" (click)="showKey()">
+          <ion-col size="10" size-lg class="center back-info" [hidden]="viewKey">
             <p> {{uid}} </p>
           </ion-col>
           <ion-col size="1" size-lg [hidden]="viewKey" class="hidden"></ion-col>
@@ -65,19 +65,37 @@
                 <ion-item button (click)="expandInfo(i)">
                   <ion-icon slot="start" name="radio-outline"></ion-icon>
                   <ion-label> {{item.nombre}}</ion-label>
+                  <ion-icon slot="end" class="connect" [ngClass]="{'error' : !item.isActive}" name="power-outline">
+                  </ion-icon>
                   <ion-icon slot="end" class="connect" [ngClass]="{'error' : !disconect[i]}" name="globe-outline">
                   </ion-icon>
                 </ion-item>
               </ion-col>
-              <ion-row *ngIf="expanded[i]">
-                <ion-col size="1"></ion-col>
-                <ion-col size="10" size-lg>
-                  <ion-item style="width: 100%;">
-                    <p> Última actualización el {{item.lastDate || '"no data"'}}, a las {{item.lasthour || '"no data"'}}
-                    </p>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
+              <ion-col *ngIf="expanded[i]" size="12" size-lg>
+                <ion-item style="padding-left: 2%; padding-right: 2%;">
+                  <p> Última actualización el {{item.lastDate || '00/00/00'}}, a las {{item.lasthour || '00:00'}}
+                  </p>
+
+                  <ion-icon slot="end" class="error show" name="power-outline"></ion-icon>
+                  <ion-toggle slot="end" class="show" (ionChange)="changeStatus(item, 'show')" [(ngModel)]="item.isActive">
+                  </ion-toggle>
+                  <ion-icon slot="end" class="connect show" name="power-outline"></ion-icon>
+
+                </ion-item>
+                <ion-item style="padding-left: 2%; padding-right: 2%;">
+                  <p>
+                    KeyDevice: <br> {{item.key}}
+                  </p>
+                </ion-item>
+
+                <ion-item class="data" style="padding-left: 2%; padding-right: 2%;">
+                  <ion-icon slot="end" class="error" name="power-outline"></ion-icon>
+                  <ion-toggle slot="end" class="data" (ionChange)="changeStatus(item,  'data')" [(ngModel)]="item.isActive">
+                  </ion-toggle>
+                  <ion-icon slot="end" class="connect" name="power-outline"></ion-icon>
+                </ion-item>
+              </ion-col>
+
             </ion-row>
           </ion-col>
           <ion-col size="1" size-lg class="hidden"></ion-col>

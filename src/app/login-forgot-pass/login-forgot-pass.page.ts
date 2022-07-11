@@ -29,6 +29,7 @@ export class LoginForgotPassPage implements OnInit {
 
   sendMail() {
     this.authService.resetPasword(this.email).then(response => {
+      this.router.navigate(['/login'])
       this.share.showToastColor('', 'Se ha enviado un correo para recuperar la constraseña, revise su bandeja de entrada y espam', 's', 'L');
     }).catch(ex => {
       this.share.showToastColor('', this.share.getMessageError(ex.code), 'w', 'm');

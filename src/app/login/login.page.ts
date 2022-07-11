@@ -33,10 +33,17 @@ export class LoginPage implements OnInit {
 
   showPass() {
     let txtPass: any = document.getElementById('pass');
+    let txtPass1: any = document.getElementById('pass1');
     if (txtPass.type == 'text')
       txtPass.type = 'password'
     else
       txtPass.type = 'text'
+
+    if (txtPass1.type == 'text')
+      txtPass1.type = 'password'
+    else
+      txtPass1.type = 'text'
+
     this.isView = !this.isView;
   }
 

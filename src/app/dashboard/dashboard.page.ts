@@ -2,10 +2,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angula
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { Chart } from 'chart.js';
-import { share } from 'rxjs/operators';
 import { nodoServices } from 'src/services/nodoServices';
 import { labelsParams, PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
+import { SwiperOptions } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 import { InfoCardComponent } from '../components/infoCard/infoCard.component';
 
 @Component({
@@ -14,6 +15,18 @@ import { InfoCardComponent } from '../components/infoCard/infoCard.component';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+
+  config: SwiperOptions = {
+    slidesPerView: 1,
+    spaceBetween: 50,
+    navigation: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false
+    },
+    //loop: true,
+    pagination: { clickable: true },
+  };
 
   cont = 0;
   fechaCompleta
@@ -75,6 +88,7 @@ export class DashboardPage implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   changeChart() {
@@ -87,6 +101,8 @@ export class DashboardPage implements OnInit {
     let newData: number[] = [this.tot_hum_tierra ?? 0, /* this.tot_ph,  */this.tot_hum_ambi ?? 0, this.tot_temp_ambi ?? 0, this.tot_luz_ambi ?? 0, this.tot_presion ?? 0]
 
     let color_temp = this.share.getTempColor(this.tot_temp_ambi);
+    console.log(this.tot_temp_ambi, color_temp);
+
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'bar',
       data: {
@@ -306,31 +322,32 @@ export class DashboardPage implements OnInit {
         }
       });
 
-      for (let key of this.filtro) {
-        this.cont++;
-        let typeParams = key;
+      if (this.filtro.length > 0) {
+        for (let key of this.filtro) {
+          this.cont++;
+          let typeParams = key;
 
-        this.tot_hum_tierra += parseFloat(typeParams.parametros_tierra.HT ?? 0);
-        /*  this.tot_ph += parseFloat(typeParams.parametros_tierra.PH); */
+          this.tot_hum_tierra += parseFloat(typeParams.parametros_tierra.HT ?? 0);
+          /*  this.tot_ph += parseFloat(typeParams.parametros_tierra.PH); */
 
-        this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
-        this.tot_temp_ambi += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
-        this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
-        this.tot_presion += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
+          this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
+          this.tot_temp_ambi += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
+          this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
+          this.tot_presion += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
 
+        }
+        this.tot_hum_tierra /= this.cont;
+        this.tot_hum_tierra = this.share.trunc(this.tot_hum_tierra, 2) ?? 0
+        /* this.tot_ph /= this.cont; */
+        this.tot_hum_ambi /= this.cont;
+        this.tot_hum_ambi = this.share.trunc(this.tot_hum_ambi, 2) ?? 0
+        this.tot_temp_ambi /= this.cont;
+        this.tot_temp_ambi = this.share.trunc(this.tot_temp_ambi, 2) ?? 0
+        this.tot_luz_ambi /= this.cont;
+        this.tot_luz_ambi = this.share.trunc(this.tot_luz_ambi, 2) ?? 0
+        this.tot_presion /= this.cont;
+        this.tot_presion = this.share.trunc(this.tot_presion, 2) ?? 0
       }
-      this.tot_hum_tierra /= this.cont;
-      this.tot_hum_tierra = this.share.trunc(this.tot_hum_tierra, 2) ?? 0
-      /* this.tot_ph /= this.cont; */
-      this.tot_hum_ambi /= this.cont;
-      this.tot_hum_ambi = this.share.trunc(this.tot_hum_ambi, 2) ?? 0
-      this.tot_temp_ambi /= this.cont;
-      this.tot_temp_ambi = this.share.trunc(this.tot_temp_ambi, 2) ?? 0
-      this.tot_luz_ambi /= this.cont;
-      this.tot_luz_ambi = this.share.trunc(this.tot_luz_ambi, 2) ?? 0
-      this.tot_presion /= this.cont;
-      this.tot_presion = this.share.trunc(this.tot_presion, 2) ?? 0
-
     } catch (ex) {
       this.share.showToastColor('No se encontró muestra', 'No hay muestras del día dew hoy: ' + this.fechaCompleta, 'w', 's');
       this.share.stopLoading();

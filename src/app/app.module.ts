@@ -12,12 +12,15 @@ import { AuthGuard } from 'src/services/auth.guard';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { SwiperModule } from 'swiper/angular'
+
 //import { ExportAsModule } from 'ngx-export-as';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    SwiperModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,

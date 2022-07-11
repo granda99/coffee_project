@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { nodoServices } from 'src/services/nodoServices';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
-import { NewDeviceComponent } from '../components/new-device/new-device.component';
+import { NewDevicePage } from '../components/new-device/new-device.page';
 
 @Component({
   selector: 'app-settings',
@@ -38,7 +38,7 @@ export class SettingsPage implements OnInit {
     this.loadDataConfig();
     this.loadDevices();
   }
-  
+
   ngOnInit() {
   }
 
@@ -64,12 +64,23 @@ export class SettingsPage implements OnInit {
       this.expanded = [];
       const response = await this.nodos.getDevicesStatus().toPromise();
       Object.keys(response).forEach((k) => {
-        this.nodosList.push(response[k])
+        let newEntry = {
+          lastDate: response[k].lastDate,
+          lasthour: response[k].lasthour,
+          nombre: response[k].nombre,
+          isActive: response[k].isActive,
+          key: k
+        }
+        this.nodosList.push(newEntry);
       });
+
       for (let x = 0; x < this.nodosList.length; x++) {
         this.expanded[x] = false;
         this.disconect[x] = this.isConnect(x);
       }
+
+      console.log(this.nodosList);
+
     } catch (ex) {
       if (ex.status == 401) {
         //this.authServ.onIdTokenRevocation();
@@ -116,8 +127,20 @@ export class SettingsPage implements OnInit {
     ev.target.complete();
   }
 
-  showAddDevice(){
-    this.share.openModalPage(NewDeviceComponent);
+  async showAddDevice() {
+    await this.share.openModalPage(NewDevicePage);
+    this.loadDataConfig();
+    this.loadDevices();
   }
 
+  async changeStatus(item, from) {
+    const response = await this.nodos.changeStatusDevice({ isActive: item.isActive }, item.key).toPromise();
+    console.log(from);
+    
+    if (response.isActive) {
+      this.share.showToastColor('', 'El dispositivo: ' + item.nombre + ' está encendido', 's', 's')
+    } else {
+      this.share.showToastColor('', 'El dispositivo: ' + item.nombre + ' está apagado', 'd', 's')
+    }
+  }
 }

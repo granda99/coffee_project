@@ -16,6 +16,12 @@
     background: rgba(208, 181, 100, 0.604);
 }
 
+ion-toggle {
+    --background: red;
+    --background-checked: green;
+    //--handle-background-checked: green;
+}
+
 .connect {
     color: green;
 }
@@ -24,7 +30,7 @@
     color: red;
 }
 
-.info{
+.info {
     background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
     border-radius: 20px;
     margin: 0%;

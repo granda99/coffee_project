@@ -7,9 +7,11 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    overflow: hidden;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 .center-element {
@@ -100,8 +102,8 @@
     border-radius: 100%;
     position: absolute;
     z-index: 3;
-    bottom: 8px;
-    right: 20px;
+    bottom: -4px;
+    right: 14px;
 }
 
 .circle-profile {
@@ -151,29 +153,29 @@
     height: 50%;
 }
 
-@media screen and (min-width: 992px) {
-    .hidden {
-        display: inherit;
-    }
+.head{
+    min-height: 10vh;
+}
+
+.show{
+    display: none;
 }
 
 @media screen and (min-width:768px) {
     .hidden {
         display: inherit;
     }
-
-    .data {
-        max-width: 500px !important;
-    }
-
-    .col {
-        min-width: 21% !important;
-    }
 }
 
 @media screen and (min-width:1000px) {
-    .col {
-        min-width: 31.5% !important;
+    .show{
+        display: flex;
+    }
+    .data{
+        display: none;
+    }
+    .info{
+        max-width: 80vw;
     }
 }
 
@@ -198,3 +200,34 @@ ion-content {
       display: none;
     }
   }
+
+  .water {
+    color: aqua;
+}
+
+.earth {
+    color: chocolate;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.sun {
+    color: yellow;
+}
+
+.press{
+    color: #00c2ff;
+}
+
+.sqare {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

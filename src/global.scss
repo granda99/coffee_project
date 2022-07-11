@@ -25,6 +25,9 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@import '~swiper/scss';
+@import '~@ionic/angular/css/ionic-swiper';
+
 div.popover-content {
     top: 60px !important;
     left: inherit !important;
@@ -35,7 +38,7 @@ div.popover-content {
 }
 
 ion-col{
-    border: 1px red solid;
+    //border: 1px red solid;
 }
 
 ion-toolbar{

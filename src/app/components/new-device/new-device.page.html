@@ -15,10 +15,10 @@
   <!-- NICKNAME -->
   <ion-row>
     <ion-col size="1"></ion-col>
-    <ion-col size="10" class="no_padding data">
+    <ion-col size="10" class="no_padding ">
       <ion-row class="inputs">
         <ion-col size="1.5">
-          <ion-icon class="center-element icon" name="person"></ion-icon>
+          <ion-icon class="center-element icon" name="radio-outline"></ion-icon>
         </ion-col>
         <ion-col size="10">
           <ion-input id="nombre" name="nombre" required [(ngModel)]="infoDevice.nombre" placeholder="Ingrese el nombre">
@@ -31,20 +31,20 @@
   <ion-row>
     <ion-col size="1"></ion-col>
     <ion-col size="10">
-      <h5>Datos de creación del dispositivo</h5>
+      <h5>Datos de creación</h5>
     </ion-col>
     <ion-col size="1"></ion-col>
   </ion-row>
   <!-- FECHA -->
   <ion-row>
     <ion-col size="1"></ion-col>
-    <ion-col size="10" class="no_padding data">
+    <ion-col size="10" class="no_padding ">
       <ion-row class="inputs">
         <ion-col size="1.5">
           <ion-icon class="center-element icon" name="calendar-outline"></ion-icon>
         </ion-col>
         <ion-col size="10.5">
-          <ion-input id="fecha" name="fecha" required readonly>{{infoDevice.lastDate}}
+          <ion-input id="fecha" name="fecha" required readonly>{{infoDevice.createDate}}
           </ion-input>
         </ion-col>
       </ion-row>
@@ -54,13 +54,13 @@
   <!-- HORA -->
   <ion-row>
     <ion-col size="1"></ion-col>
-    <ion-col size="10" class="no_padding data">
+    <ion-col size="10" class="no_padding ">
       <ion-row class="inputs">
         <ion-col size="1.5">
           <ion-icon class="center-element icon" name="alarm-outline"></ion-icon>
         </ion-col>
         <ion-col size="10.5">
-          <ion-input id="hora" name="hora" required readonly>{{infoDevice.lasthour}}
+          <ion-input id="hora" name="hora" required readonly>{{infoDevice.createHour}}
           </ion-input>
         </ion-col>
       </ion-row>
@@ -70,7 +70,7 @@
   <ion-row>
     <ion-col size="1"></ion-col>
     <ion-col size="10" size-lg>
-      <ion-button color="primary" shape="round" (click)="logout()" class="register bold" expand="block">GUARDAR
+      <ion-button color="primary" shape="round" (click)="saveDevice()" class="register bold" expand="block">GUARDAR
       </ion-button>
     </ion-col>
     <ion-col size="1"></ion-col>

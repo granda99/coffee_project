@@ -15,6 +15,7 @@ import { FotoModalComponent } from '../foto-modal/foto-modal.component';
 })
 export class ProfilePage implements OnInit {
 
+  fechaNacimiento;
   infoUser;
   base64Img;
 
@@ -172,7 +173,7 @@ export class ProfilePage implements OnInit {
 
   selectDate() {
     this.showCalendar = false;
-    this.infoUser.fechaNacimiento = this.share.toShortDate(this.infoUser.fechaNacimiento);
+    this.infoUser.fechaNacimiento = this.share.toShortDate(this.fechaNacimiento);
   }
 }
 
