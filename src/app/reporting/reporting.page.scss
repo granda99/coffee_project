@@ -1,15 +1,13 @@
 @import url("../app.component.scss");
 
 .back {
-    background-attachment: fixed;
-    overflow: scroll;
     background-image: url("../../assets/backs/bg_splash_screen.png");
-    height: 90vh;
-    overflow:hidden;
 }
+
 .menu-back {
     background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
 }
+
 .label {
     padding-left: 10px;
 }

@@ -79,8 +79,6 @@ export class SettingsPage implements OnInit {
         this.disconect[x] = this.isConnect(x);
       }
 
-      console.log(this.nodosList);
-
     } catch (ex) {
       if (ex.status == 401) {
         //this.authServ.onIdTokenRevocation();
@@ -109,7 +107,7 @@ export class SettingsPage implements OnInit {
       let ultimo = this.share.jsonDate(nodo.lastDate);
       var horaMinut = nodo.lasthour.split(':')
 
-      if (ultimo.dia + '/' + ultimo.mes + '/' + ultimo.año == hoy[0] + '/' + hoy[1] + '/' + hoy[2]) {
+      if (ultimo.dia + '/' + ultimo.mes + '/' + ultimo.año == hoy.fecha) {
 
         if (f.getHours() == horaMinut[0])
           return true;
@@ -135,8 +133,7 @@ export class SettingsPage implements OnInit {
 
   async changeStatus(item, from) {
     const response = await this.nodos.changeStatusDevice({ isActive: item.isActive }, item.key).toPromise();
-    console.log(from);
-    
+
     if (response.isActive) {
       this.share.showToastColor('', 'El dispositivo: ' + item.nombre + ' está encendido', 's', 's')
     } else {

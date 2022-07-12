@@ -65,19 +65,19 @@ export class ProfilePage implements OnInit {
 
   ionViewWillEnter() {
     this.infoUser = JSON.parse(sessionStorage.getItem('infoUser'));
-    console.log(this.infoUser);
-
+    this.infoUser.telf = "";
+    this.infoUser.fechaNacimiento = "Vacío";
   }
 
   ngOnInit() {
     this.infoUser = {
+      uid: "",
       displayName: "",
       email: "",
       emailVerified: "",
       photoURL: "",
       telf: "",
-      uid: "",
-      fechaNacimiento: "",
+      fechaNacimiento: "Vacío",
     }
   }
 

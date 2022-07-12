@@ -444,7 +444,13 @@ export class ReportingPage implements OnInit {
     this.doughnutChart5 = null;
     let cien;
     /* TODOS LOS PARÁMETROS */
-    let allData: number[] = [this.tot_hum_tierra, /* this.tot_ph, */ this.tot_hum_ambi, this.tot_temp_ambi, this.tot_luz_ambi, this.tot_presion]
+    let allData: number[];
+    if (this.tot_hum_tierra > 0 && this.tot_hum_ambi > 0 && this.tot_temp_ambi > 0 && this.tot_luz_ambi > 0 && this.tot_presion > 0)
+      allData = [this.tot_hum_tierra, this.tot_hum_ambi, this.tot_temp_ambi, this.tot_luz_ambi, this.tot_presion]
+    else {
+      allData = [0, 0, 0, 0, 0, 100]
+
+    }
     let ht: number[];
     let ha: number[];
     let ta: number[];
@@ -608,21 +614,19 @@ export class ReportingPage implements OnInit {
         }
 
       }
-      if (this.cont == 0)
-        this.cont = 1;
-
-      this.tot_hum_tierra /= this.cont;
-      this.tot_hum_tierra = this.share.trunc(this.tot_hum_tierra, 2)
-      /* this.tot_ph /= this.cont; */
-      this.tot_hum_ambi /= this.cont;
-      this.tot_hum_ambi = this.share.trunc(this.tot_hum_ambi, 2)
-      this.tot_temp_ambi /= this.cont;
-      this.tot_temp_ambi = this.share.trunc(this.tot_temp_ambi, 2)
-      this.tot_luz_ambi /= this.cont;
-      this.tot_luz_ambi = this.share.trunc(this.tot_luz_ambi, 2)
-      this.tot_presion /= this.cont;
-      this.tot_presion = this.share.trunc(this.tot_presion, 2)
-
+      if (this.cont > 0) {
+        this.tot_hum_tierra /= this.cont;
+        this.tot_hum_tierra = this.share.trunc(this.tot_hum_tierra, 2)
+        /* this.tot_ph /= this.cont; */
+        this.tot_hum_ambi /= this.cont;
+        this.tot_hum_ambi = this.share.trunc(this.tot_hum_ambi, 2)
+        this.tot_temp_ambi /= this.cont;
+        this.tot_temp_ambi = this.share.trunc(this.tot_temp_ambi, 2)
+        this.tot_luz_ambi /= this.cont;
+        this.tot_luz_ambi = this.share.trunc(this.tot_luz_ambi, 2)
+        this.tot_presion /= this.cont;
+        this.tot_presion = this.share.trunc(this.tot_presion, 2)
+      }
       this.share.stopLoading();
       this.doughnutChartMethod()
     } catch (ex) {

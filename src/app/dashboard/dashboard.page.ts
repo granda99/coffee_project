@@ -6,8 +6,11 @@ import { nodoServices } from 'src/services/nodoServices';
 import { labelsParams, PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 import { SwiperOptions } from 'swiper';
-import { SwiperComponent } from 'swiper/angular';
 import { InfoCardComponent } from '../components/infoCard/infoCard.component';
+
+import SwiperCore, { Autoplay, Keyboard, Pagination, Scrollbar, Zoom } from 'swiper';
+SwiperCore.use([Autoplay, Keyboard, Pagination, Scrollbar, Zoom]);
+
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +24,7 @@ export class DashboardPage implements OnInit {
     spaceBetween: 50,
     navigation: true,
     autoplay: {
-      delay: 5000,
+      delay: 2500,
       disableOnInteraction: false
     },
     //loop: true,
@@ -101,7 +104,6 @@ export class DashboardPage implements OnInit {
     let newData: number[] = [this.tot_hum_tierra ?? 0, /* this.tot_ph,  */this.tot_hum_ambi ?? 0, this.tot_temp_ambi ?? 0, this.tot_luz_ambi ?? 0, this.tot_presion ?? 0]
 
     let color_temp = this.share.getTempColor(this.tot_temp_ambi);
-    console.log(this.tot_temp_ambi, color_temp);
 
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'bar',

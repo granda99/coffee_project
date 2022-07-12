@@ -54,6 +54,7 @@ export class UserService {
         try {
             const { user } = await this.afAuth.createUserWithEmailAndPassword(loginObj.email, loginObj.password);
             await this.sendVerificationEmail();
+            this.updateUserLogin(user);
             return user;
         } catch (ex) {
             console.log('Error: ', ex);
@@ -64,7 +65,7 @@ export class UserService {
     async login(loginObj: any): Promise<User> {
 
         const { user } = await this.afAuth.signInWithEmailAndPassword(loginObj.email, loginObj.password);
-        //this.updateUserData(user)
+        //this.updateUserLogin(user);
         return user;
 
     }
@@ -91,6 +92,19 @@ export class UserService {
         }
     }
 
+    public updateUserLogin(user: User) {
+        const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+        const data = {
+            uid: user.uid,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            displayName: user.displayName,
+            photoURL: user.photoURL
+        }
+
+        return userRef.set(data, { merge: true })
+    }
+
     public updateUserData(user: Datos) {
         const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
         const data = {
@@ -103,6 +117,7 @@ export class UserService {
             fechaNacimiento: user.fechaNacimiento,
         }
 
+        sessionStorage.setItem('infoUser', JSON.stringify(data));
         return userRef.set(data, { merge: true })
     }
 
