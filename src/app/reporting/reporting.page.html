@@ -109,109 +109,206 @@
       </ion-select>
     </ion-col>
   </ion-row>
-  <ion-row class="menu-back" [hidden]="activeParam">
-    <!-- TITLE PARAM TYPE -->
-    <ion-col size="6">
-      <ion-label class="label">Parámetro</ion-label>
-    </ion-col>
-    <!-- SELECT PARAM TYPE-->
-    <ion-col size="6">
-      <ion-select placeholder="Selecione Uno" (ionChange)="selectedParam($event.detail.value)">
-        <ion-select-option value="">Todos</ion-select-option>
-        <ion-select-option value="HT">Humedad de la tierra</ion-select-option>
-        <!-- <ion-select-option value="PH">PH de la tierra</ion-select-option> -->
-        <ion-select-option value="HA">Humedad del ambiente</ion-select-option>
-        <ion-select-option value="TA">Temperatura del ambiente</ion-select-option>
-        <ion-select-option value="LA">Luz del ambiente</ion-select-option>
-        <ion-select-option value="PA">Presión ambiente</ion-select-option>
-      </ion-select>
-    </ion-col>
-  </ion-row>
 
-  <!-- REPOORT -->
+  <!-- REPOORTS -->
+  <!-- LINES -->
   <ion-row [hidden]="showReportInfo">
-    <ion-col size="1"> </ion-col>
-    <ion-col size="10" class="chart" [hidden]="showLine">
-      <ion-card>
-        <ion-card-header>
-          {{factor || 'TODO'}}
-        </ion-card-header>
-        <ion-card-content>
-          <canvas #lineCanvas style="position: relative; height:20vh; width:40vw"></canvas>
-        </ion-card-content>
-      </ion-card>
+    <ion-col size="0.5"> </ion-col>
+    <ion-col size="11" class="chart" [hidden]="showLine">
+      <swiper #swiperSlideShow [config]="config">
+        <ng-template swiperSlide>
+          <ion-card style="min-width: 100%;">
+            <ion-card-content>
+              <canvas #lineCanvas style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+
+        <ng-template swiperSlide>
+          <ion-card style="min-width: 100%;">
+            <ion-card-content>
+              <canvas #lineCanvas1 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+
+        <ng-template swiperSlide>
+          <ion-card style="min-width: 100%;">
+            <ion-card-content>
+              <canvas #lineCanvas2 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+
+        <ng-template swiperSlide>
+          <ion-card style="min-width: 100%;">
+            <ion-card-content>
+              <canvas #lineCanvas3 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+
+        <ng-template swiperSlide>
+          <ion-card style="min-width: 100%;">
+            <ion-card-content>
+              <canvas #lineCanvas4 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+
+        <ng-template swiperSlide>
+          <ion-card style="min-width: 100%;">
+            <ion-card-content>
+              <canvas #lineCanvas5 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+      </swiper>
     </ion-col>
-    <ion-col size="1"> </ion-col>
+    <ion-col size="0.5"> </ion-col>
   </ion-row>
+  <!--DOUGHNUTS -->
   <ion-row [hidden]="showReportInfo">
-    <ion-col size="1"> </ion-col>
+    <ion-col size="1"></ion-col>
     <ion-col size="10" class="chart" [hidden]="!showLine">
-      <ion-card>
-        <ion-card-header>
-          {{factor || 'TODO'}}
-        </ion-card-header>
-        <ion-card-content [hidden]="!dona[0]">
-          <canvas #doughnutCanvas style="position: relative;  width:40vw"></canvas>
-        </ion-card-content>
-        <ion-card-content [hidden]="!dona[1]">
-          <canvas #doughnutCanvas1 style="position: relative;  width:40vw"></canvas>
+      <swiper #swiperSlideShow [config]="config">
+        <ng-template swiperSlide>
+          <ion-card>
+            <!-- CHART ALL -->
+            <ion-card-content>
+              <canvas #doughnutCanvas style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+            <ion-card-content>
+              <!-- PARAMS -->
+              <ion-row>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
+                    <ion-icon slot="end" class="earth" name="earth-outline"></ion-icon>
+                    <p>
+                      Humedad de la tierra ({{tot_hum_tierra}} %)
+                    </p>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
+                    <ion-icon slot="end" class="green" name="leaf-outline"></ion-icon>
+                    <p>
+                      Humedad del ambiente ({{tot_hum_ambi}} %)
+                    </p>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-icon slot="start" class="red" name="thermometer-outline"></ion-icon>
+                    <p>
+                      Temperatura del ambiente ({{tot_temp_ambi}} °C)
+                    </p>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-icon slot="start" class="sun" name="sunny-outline"></ion-icon>
+                    <p>
+                      Luz del ambiente ({{tot_luz_ambi}} %)
+                    </p>
+                  </ion-item>
+                </ion-col>
+                <ion-col size="12">
+                  <ion-item>
+                    <ion-icon slot="start" class="press" name="cloud-outline"></ion-icon>
+                    <ion-icon slot="end" class="press" name="swap-vertical-outline"></ion-icon>
+                    <p>
+                      Presión ambiente ({{tot_presion}} PSI)
+                    </p>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        </ng-template>
+        <ng-template swiperSlide>
+          <ion-card>
+            <!-- CHART HT -->
+            <ion-card-content>
+              <canvas #doughnutCanvas1 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+            <!-- PARAM -->
+            <ion-item>
+              <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
+              <ion-icon slot="end" class="earth" name="earth-outline"></ion-icon>
+              <p>
+                Humedad de la tierra ({{tot_hum_tierra}} %)
+              </p>
+            </ion-item>
+          </ion-card>
+        </ng-template>
 
-          <ion-item>
-            <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
-            <ion-icon slot="end" class="earth" name="earth-outline"></ion-icon>
-            <p>
-              Humedad de la tierra (HT %)
-            </p>
-          </ion-item>
-        </ion-card-content>
-        <ion-card-content [hidden]="!dona[2]">
-          <canvas #doughnutCanvas2 style="position: relative; width:40vw"></canvas>
-        </ion-card-content>
-        <ion-card-content [hidden]="!dona[3]">
-          <canvas #doughnutCanvas3 style="position: relative;  width:40vw"></canvas>
-        </ion-card-content>
-        <ion-card-content [hidden]="!dona[4]">
-          <canvas #doughnutCanvas4 style="position: relative;  width:40vw"></canvas>
-        </ion-card-content>
-        <ion-card-content [hidden]="!dona[5]">
-          <canvas #doughnutCanvas5 style="position: relative;  width:40vw"></canvas>
-        </ion-card-content>
-      </ion-card>
+        <ng-template swiperSlide>
+          <ion-card>
+            <!-- CHART HA -->
+            <ion-card-content>
+              <canvas #doughnutCanvas2 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+            <!-- PARAM -->
+            <ion-item>
+              <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
+              <ion-icon slot="end" class="green" name="leaf-outline"></ion-icon>
+              <p>
+                Humedad del ambiente ({{tot_hum_ambi}} %)
+              </p>
+            </ion-item>
+          </ion-card>
+        </ng-template>
+
+        <ng-template swiperSlide>
+          <ion-card>
+            <ion-card-content>
+              <canvas #doughnutCanvas3 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+            <ion-item>
+              <ion-icon slot="start" class="red" name="thermometer-outline"></ion-icon>
+              <p>
+                Temperatura del ambiente ({{tot_temp_ambi}} °C)
+              </p>
+            </ion-item>
+          </ion-card>
+        </ng-template>
+        <ng-template swiperSlide>
+          <ion-card>
+            <ion-card-content>
+              <canvas #doughnutCanvas4 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+            <ion-item>
+              <ion-icon slot="start" class="sun" name="sunny-outline"></ion-icon>
+              <p>
+                Luz del ambiente ({{tot_luz_ambi}} %)
+              </p>
+            </ion-item>
+          </ion-card>
+        </ng-template>
+        <ng-template swiperSlide>
+          <ion-card>
+            <ion-card-content>
+              <canvas #doughnutCanvas5 style="position: relative; height:25vh; width:40vw;"></canvas>
+            </ion-card-content>
+            <ion-item>
+              <ion-icon slot="start" class="press" name="cloud-outline"></ion-icon>
+              <ion-icon slot="end" class="press" name="swap-vertical-outline"></ion-icon>
+              <p>
+                Presión ambiente ({{tot_presion}} PSI)
+              </p>
+            </ion-item>
+          </ion-card>
+        </ng-template>
+      </swiper>
     </ion-col>
-    <ion-col size="1"> </ion-col>
+    <ion-col size="1"></ion-col>
   </ion-row>
 
   <ion-refresher style="background: transparent;" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200"
     (ionRefresh)="doRefresh($event)">
     <ion-refresher-content style="background: transparent;"></ion-refresher-content>
   </ion-refresher>
-
-  <!--   <table id="excel-tablePropiedades" class="table table-sm table-bordered print" style="width: 100%">
-      <thead class="thead-dark">
-        <tr>
-          <th colspan="4" class="bgcol">
-            DATASET
-          </th>
-        </tr>
-        <tr>
-          <th>Dispositivo</th>
-          <th>HT</th>
-          <th>PH</th>
-          <th>HA</th>
-          <th>LA</th>
-          <th>TA</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of dataset">
-          <td> {{item.dispositivo}} </td>
-          <td> {{item.parametros_tierra.HT}}</td>
-          <td> {{item.parametros_tierra.PH}}</td>
-          <td> {{item.parametros_ambiente.HA}} </td>
-          <td> {{item.parametros_ambiente.LA}} </td>
-          <td> {{item.parametros_ambiente.TA}} </td>
-        </tr>
-      </tbody>
-    </table> -->
-
 </ion-content>

@@ -7,6 +7,7 @@ import { DataService, tableDataset } from 'src/services/data.service';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { InfoCardComponent } from '../components/infoCard/infoCard.component';
+import { SwiperOptions } from 'swiper';
 
 @Component({
   selector: 'app-reporting',
@@ -44,15 +45,18 @@ export class ReportingPage implements OnInit {
   active: Boolean = true;
   activeParam: Boolean = true;
   showReport = [false, false, false, false];
-  dona = [true, false, false, false, false, false];
-
 
   // Importando ViewChild. Necesitamos el decorador @ViewChild para obtener una referencia a la variable local 
   // que hemos agregado al elemento canvas en la plantilla HTML.
   @ViewChild('lineCanvas') private lineCanvas: ElementRef;
+  @ViewChild('lineCanvas1') private lineCanvas1: ElementRef;
+  @ViewChild('lineCanvas2') private lineCanvas2: ElementRef;
+  @ViewChild('lineCanvas3') private lineCanvas3: ElementRef;
+  @ViewChild('lineCanvas4') private lineCanvas4: ElementRef;
+  @ViewChild('lineCanvas5') private lineCanvas5: ElementRef;
+  @ViewChild('lineCanvas6') private lineCanvas6: ElementRef;
 
   @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
-
   @ViewChild('doughnutCanvas1') private doughnutCanvas1: ElementRef;
   @ViewChild('doughnutCanvas2') private doughnutCanvas2: ElementRef;
   @ViewChild('doughnutCanvas3') private doughnutCanvas3: ElementRef;
@@ -60,12 +64,30 @@ export class ReportingPage implements OnInit {
   @ViewChild('doughnutCanvas5') private doughnutCanvas5: ElementRef;
 
   lineChart: any;
+  lineChart1: any;
+  lineChart2: any;
+  lineChart3: any;
+  lineChart4: any;
+  lineChart5: any;
+
   doughnutChart: any;
   doughnutChart1: any;
   doughnutChart2: any;
   doughnutChart3: any;
   doughnutChart4: any;
   doughnutChart5: any;
+
+  config: SwiperOptions = {
+    slidesPerView: 1.15,
+    spaceBetween: 15,
+    navigation: true,
+    autoplay: {
+      delay: 2500,
+      disableOnInteraction: false
+    },
+    //loop: true,
+    //pagination: { clickable: true },
+  };
 
   constructor(
     private nodos: nodoServices,
@@ -108,72 +130,18 @@ export class ReportingPage implements OnInit {
     }
   }
 
-  selectedParam(param) {
-    this.dona = [false, false, false, false, false, false];
-    this.param = param;
-    if (param != "") {
-      this.factor = this.titleSelected(param);
-      this.factor_key = param;
-      switch (param) {
-        case 'HT':
-          this.dona[1] = true;
-          break;
-        case 'HA':
-          this.dona[2] = true;
-          break;
-        case 'TA':
-          this.dona[3] = true;
-          break;
-        case 'LA':
-          this.dona[4] = true;
-          break;
-        case 'PA':
-          this.dona[5] = true;
-          break;
-      }
-    }
-    else {
-      this.showReportInfo = true;
-      this.dona[0] = true;
-    }
-    if (this.reportTitle != 'Anual') {
-      this.showLine = true;
-      this.calcularValores();
-    } else {
-      this.calcularValoresAnio(this.factor_key);
-      this.showLine = false;
-    }
-  }
-
   selectedAnio(anio) {
     if (anio != "") {
       this.activeParam = false
       this.anio = anio;
       this.showLine = false;
-      this.calcularValoresAnio(this.factor_key);
+      this.calcularValoresAnio();
     }
     else {
       this.showReportInfo = true;
       this.activeParam = true;
     }
     //this.show = true;
-  }
-
-  titleSelected(value) {
-    switch (value) {
-      case "HT":
-        return "Humedad de la tierra"
-      case "PH":
-        return "PH de la tierra"
-      case "HA":
-        return "Humedad del ambiente"
-      case "TA":
-        return "Temperatura del ambiente"
-      case "LA":
-        return "Luz del ambiente"
-      case "PA":
-        return "Presión del ambiente"
-    }
   }
 
   cleanOldData() {
@@ -259,11 +227,10 @@ export class ReportingPage implements OnInit {
     return datos;
   }
 
-  prepareDataLine(meses) {
+  prepareDataLine(meses, p) {
     let dataList = [];
 
-    if (meses[0].hasOwnProperty('HT'))
-
+    if (p == "")
       Object.keys(colorParams).forEach((p) => {
         let newParam = {
           label: colorParams[p].sig,
@@ -291,28 +258,34 @@ export class ReportingPage implements OnInit {
         dataList.push(newParam);
       });
 
-
     else {
+      let mesParam = [];
+      meses.forEach((mes) => {
+
+        mesParam.push(mes[p]);
+
+      });
+
       dataList.push({
-        label: this.factor,
+        label: colorParams[p].sig,
         fill: true,
         lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: colorParams[p].backgroundColor,
+        borderColor: colorParams[p].selected,
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: 'miter',
-        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBorderColor: colorParams[p].selected,
         pointBackgroundColor: '#fff',
         pointBorderWidth: 1,
         pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBackgroundColor: colorParams[p].selected,
         pointHoverBorderColor: 'rgba(220,220,220,1)',
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: this.meses,
+        data: mesParam,
         spanGaps: false,
       })
     }
@@ -320,25 +293,77 @@ export class ReportingPage implements OnInit {
   }
 
   lineChartMethod() {
-    if (this.lineChart) {
-      this.lineChart.clear()
-    }
+    /*     if (this.lineChart) {
+          this.lineChart.clear()
+        } */
     this.showReportInfo = false;
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
         labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        datasets: this.prepareDataLine(this.meses),
+        datasets: this.prepareDataLine(this.meses, ""),
       }
     });
     this.lineChart.update();
+
+
+    this.lineChart1 = new Chart(this.lineCanvas1.nativeElement, {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: this.prepareDataLine(this.meses, "HT"),
+      }
+    });
+    this.lineChart1.update();
+
+
+    this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: this.prepareDataLine(this.meses, "HA"),
+      }
+    });
+    this.lineChart2.update();
+
+
+    this.lineChart3 = new Chart(this.lineCanvas3.nativeElement, {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: this.prepareDataLine(this.meses, "TA"),
+      }
+    });
+    this.lineChart3.update();
+
+
+    this.lineChart4 = new Chart(this.lineCanvas4.nativeElement, {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: this.prepareDataLine(this.meses, "LA"),
+      }
+    });
+    this.lineChart4.update();
+
+
+    this.lineChart5 = new Chart(this.lineCanvas5.nativeElement, {
+      type: 'line',
+      data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: this.prepareDataLine(this.meses, "PA"),
+      }
+    });
+    this.lineChart5.update();
+
+
   }
 
   exportData(op) {
     let fileName = 'DataSet completo';
     this.dataset = [];
     if (op != 'all') {
-      fileName = 'Reporte-' + this.reportTitle + '-' + this.factor;
+      fileName = 'Coffee-ISH-Reporte-' + this.reportTitle;
       for (let key of this.filtro) {
         let row = this.jsonToTable(key);
         this.dataset.push(row);
@@ -357,6 +382,8 @@ export class ReportingPage implements OnInit {
   }
 
   jsonToTable(json: any): tableDataset {
+    console.log(json);
+    
     let item: tableDataset = {
       dispositivo: json.dispositivo,
       usuario: json.usuario,
@@ -430,7 +457,6 @@ export class ReportingPage implements OnInit {
   async doRefresh(ev) {
     sessionStorage.removeItem('metricas')
     await this.getData()
-    this.lineChartMethod();
     ev.target.complete();
   }
 
@@ -457,41 +483,33 @@ export class ReportingPage implements OnInit {
     let la: number[];
     let pa: number[];
 
-    switch (this.param) {
-      case "HT":
-        /* HUMEDAD DE LA TIERRA */
-        cien = this.share.trunc(100 - this.tot_hum_tierra, 2);
-        ht = [this.tot_hum_tierra, 0, 0, 0, 0, cien];
 
-        break;
-      /*  case "PH":
-          cien = 100 - this.tot_ph
-         break; */
-      case "HA":
-        /* HUMEDAD DEL AMBIENTE */
-        cien = this.share.trunc(100 - this.tot_hum_ambi, 2);
-        ha = [0, this.tot_hum_ambi, 0, 0, 0, cien];
+    /* HUMEDAD DE LA TIERRA */
+    cien = this.share.trunc(100 - this.tot_hum_tierra, 2);
+    ht = [this.tot_hum_tierra, 0, 0, 0, 0, cien];
 
-        break;
-      case "TA":
-        /* TEMPERATURA DEL AMBIENTE */
-        cien = this.share.trunc(100 - this.tot_temp_ambi, 2);
-        ta = [0, 0, this.tot_temp_ambi, 0, 0, cien];
+    /*  case "PH":
+        cien = 100 - this.tot_ph
+       break; */
 
-        break;
-      case "LA":
-        /* LUZ DEL AMBIENTE */
-        cien = this.share.trunc(100 - this.tot_luz_ambi, 2);
-        la = [0, 0, 0, this.tot_luz_ambi, 0, cien]
+    /* HUMEDAD DEL AMBIENTE */
+    cien = this.share.trunc(100 - this.tot_hum_ambi, 2);
+    ha = [0, this.tot_hum_ambi, 0, 0, 0, cien];
 
-        break;
-      case "PA":
-        /* PRESION DEL AMBIENTE */
-        cien = this.share.trunc(100 - this.tot_presion, 2);
-        pa = [0, 0, 0, 0, this.tot_presion, cien]
+    /* TEMPERATURA DEL AMBIENTE */
+    cien = this.share.trunc(100 - this.tot_temp_ambi, 2);
+    ta = [0, 0, this.tot_temp_ambi, 0, 0, cien];
 
-        break;
-    }
+
+    /* LUZ DEL AMBIENTE */
+    cien = this.share.trunc(100 - this.tot_luz_ambi, 2);
+    la = [0, 0, 0, this.tot_luz_ambi, 0, cien]
+
+    /* PRESION DEL AMBIENTE */
+    cien = this.share.trunc(100 - this.tot_presion, 2);
+    pa = [0, 0, 0, 0, this.tot_presion, cien]
+
+
 
     /*COLORES Y VARIACIÓN DEL COLOR, PARA LA TEMPERATURA, BAJA AZUL, MEDIA AMARILLA, ALTA ROJA */
     let colors = this.share.getColorsParams(this.param, this.tot_temp_ambi);
@@ -512,7 +530,7 @@ export class ReportingPage implements OnInit {
     this.doughnutChart1 = new Chart(this.doughnutCanvas1.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: colors.labels,
+        //labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: ht,
@@ -525,7 +543,7 @@ export class ReportingPage implements OnInit {
     this.doughnutChart2 = new Chart(this.doughnutCanvas2.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: colors.labels,
+        //labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: ha,
@@ -538,7 +556,7 @@ export class ReportingPage implements OnInit {
     this.doughnutChart3 = new Chart(this.doughnutCanvas3.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: colors.labels,
+        //labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: ta,
@@ -551,7 +569,7 @@ export class ReportingPage implements OnInit {
     this.doughnutChart4 = new Chart(this.doughnutCanvas4.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: colors.labels,
+        //labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: la,
@@ -564,10 +582,10 @@ export class ReportingPage implements OnInit {
     this.doughnutChart5 = new Chart(this.doughnutCanvas5.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: colors.labels,
+        //labels: colors.labels,
         datasets: [{
           label: '# of Votes',
-          data: la,
+          data: pa,
           backgroundColor: colors.base,
           hoverBackgroundColor: colors.selected
         }]
@@ -583,36 +601,12 @@ export class ReportingPage implements OnInit {
         this.cont++;
         let typeParams = key;
 
-        if (this.param != "") {
-          switch (this.param) {
-            case "HT":
-              this.tot_hum_tierra += parseFloat(typeParams.parametros_tierra.HT ?? 0);
-              break;
-            /*  case "PH":
-               this.tot_ph += parseFloat(typeParams.parametros_tierra.PH);
-               break; */
-            case "HA":
-              this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
-              break;
-            case "TA":
-              this.tot_temp_ambi += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
-              break;
-            case "LA":
-              this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
-              break;
-            case "PA":
-              this.tot_presion += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
-              break;
-          }
-        } else {
-          this.tot_hum_tierra += parseFloat(typeParams.parametros_tierra.HT ?? 0);
-          /*  this.tot_ph += parseFloat(typeParams.parametros_tierra.PH?? 0); */
-          this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
-          this.tot_temp_ambi += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
-          this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
-          this.tot_presion += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
-        }
-
+        this.tot_hum_tierra += parseFloat(typeParams.parametros_tierra.HT ?? 0);
+        /*  this.tot_ph += parseFloat(typeParams.parametros_tierra.PH?? 0); */
+        this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
+        this.tot_temp_ambi += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
+        this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
+        this.tot_presion += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
       }
       if (this.cont > 0) {
         this.tot_hum_tierra /= this.cont;
@@ -636,88 +630,46 @@ export class ReportingPage implements OnInit {
     }
   }
 
-  calcularValoresAnio(param) {
-    let total_Param = 0
-    this.meses = []
+  calcularValoresAnio() {
+    this.meses = [];
+    this.filtro = [];
+    for (var mes = 1; mes <= 12; mes++) {
+      let month: Months = {
+        HT: 0,
+        PH: 0,
+        HA: 0,
+        LA: 0,
+        TA: 0,
+        PA: 0,
+      }
+      for (let key in this.jsonObj) {
+        if (this.jsonObj.hasOwnProperty(key)) {
+          let kDate = this.share.jsonDate(this.jsonObj[key].fecha);
+          let typeParams = this.jsonObj[key];
 
-    if (param != '')
-      for (var mes = 1; mes <= 12; mes++) {
-        for (let key in this.jsonObj) {
-          if (this.jsonObj.hasOwnProperty(key)) {
+          if (kDate.mes == mes && kDate.año == this.anio) {
+            this.filtro.push(this.jsonObj[key]);
             this.cont++;
-            let kDate = this.share.jsonDate(this.jsonObj[key].fecha);
-            let typeParams = this.jsonObj[key];
+            month.HT += parseFloat(typeParams.parametros_tierra.HT ?? 0);
+            //month.tot_ph += parseFloat(typeParams.parametros_tierra.PH);
+            month.HA += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
+            month.TA += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
+            month.LA += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
+            month.PA += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
 
-            if (kDate.mes == mes && kDate.año == this.anio) {
-              switch (param) {
-                case "HT":
-                  total_Param += parseFloat(typeParams.parametros_tierra.HT ?? 0);
-                  break;
-                case "PH":
-                  total_Param += parseFloat(typeParams.parametros_tierra.PH ?? 0);
-                  break;
-                case "HA":
-                  total_Param += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
-                  break;
-                case "TA":
-                  total_Param += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
-                  break;
-                case "LA":
-                  total_Param += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
-                  break;
-                case "PA":
-                  total_Param += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
-                  break;
-              }
-            }
           }
         }
-        if (this.cont == 0)
-          this.cont = 1;
-        total_Param /= this.cont;
-        this.meses.push(total_Param);
-        total_Param = 0;
-        this.cont = 0;
       }
+      if (this.cont == 0)
+        this.cont = 1;
 
-    else {
-      for (var mes = 1; mes <= 12; mes++) {
-        let month: Months = {
-          HT: 0,
-          PH: 0,
-          HA: 0,
-          LA: 0,
-          TA: 0,
-          PA: 0,
-        }
-        for (let key in this.jsonObj) {
-          if (this.jsonObj.hasOwnProperty(key)) {
-            let kDate = this.share.jsonDate(this.jsonObj[key].fecha);
-            let typeParams = this.jsonObj[key];
+      month.HT /= this.cont;
+      month.HA /= this.cont;
+      month.LA /= this.cont;
+      month.TA /= this.cont;
+      month.PA /= this.cont;
 
-            if (kDate.mes == mes && kDate.año == this.anio) {
-              this.cont++;
-              month.HT += parseFloat(typeParams.parametros_tierra.HT ?? 0);
-              //month.tot_ph += parseFloat(typeParams.parametros_tierra.PH);
-              month.HA += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
-              month.TA += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
-              month.LA += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
-              month.PA += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
-
-            }
-          }
-        }
-        if (this.cont == 0)
-          this.cont = 1;
-
-        month.HT /= this.cont;
-        month.HA /= this.cont;
-        month.LA /= this.cont;
-        month.TA /= this.cont;
-        month.PA /= this.cont;
-        this.meses.push(month);
-      }
-
+      this.meses.push(month);
     }
 
     this.lineChartMethod();

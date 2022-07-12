@@ -7,9 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { ReportingPageRoutingModule } from './reporting-routing.module';
 
 import { ReportingPage } from './reporting.page';
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   imports: [
+    SwiperModule,
     CommonModule,
     FormsModule,
     IonicModule,

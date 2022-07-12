@@ -36,8 +36,9 @@ export class ProfilePage implements OnInit {
       if (this.router.url == '/tabs/profile')
         this.router.navigate(['/tabs/dashboard']).then(r => { });
     });
+
     for (let plat of platform.platforms()) {
-      if (plat == "desktop")
+      if (plat == "desktop" || plat == "mobileweb")
         this.isDesck = true;
     }
   }
@@ -65,8 +66,10 @@ export class ProfilePage implements OnInit {
 
   ionViewWillEnter() {
     this.infoUser = JSON.parse(sessionStorage.getItem('infoUser'));
-    this.infoUser.telf = "";
-    this.infoUser.fechaNacimiento = "Vacío";
+    if (!this.infoUser.telf)
+      this.infoUser.telf = "";
+    if (!this.infoUser.fechaNacimiento)
+      this.infoUser.fechaNacimiento = "Vacío";
   }
 
   ngOnInit() {
