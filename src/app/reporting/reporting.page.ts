@@ -382,8 +382,6 @@ export class ReportingPage implements OnInit {
   }
 
   jsonToTable(json: any): tableDataset {
-    console.log(json);
-    
     let item: tableDataset = {
       dispositivo: json.dispositivo,
       usuario: json.usuario,

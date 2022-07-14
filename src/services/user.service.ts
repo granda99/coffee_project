@@ -4,22 +4,26 @@ import { Observable, of, } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-//import { browserSessionPersistence } from '@angular/fire/auth';
 import firebase from 'firebase/compat/app';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { SharedService } from './shared.services';
+import { HTTP_OPTIONS_MULTIPART, SharedService } from './shared.services';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
     public user$: Observable<User>
+    public url: string
+    public apiToken: string
 
     constructor(
+        private _http: HttpClient,
         private afAuth: AngularFireAuth,
         private share: SharedService,
         private afs: AngularFirestore
     ) {
+        this.url = environment.firebaseConfig.refreshTokenUrl;
+        this.apiToken = environment.firebaseConfig.apiKey;
         this.user$ = this.afAuth.authState.pipe(
             switchMap((user) => {
                 if (user) {
@@ -121,10 +125,18 @@ export class UserService {
         return userRef.set(data, { merge: true })
     }
 
-    async onIdTokenRevocation() {
+    onIdTokenRevocation(): Observable<any> {
         // For an email/password user. Prompt the user for the password again.
-        let password = await this.share.confirmPassReauth();
+        //let password = await this.share.confirmPassReauth();
         //this.afAuth.setPersistence(browserSessionPersistence)
+        const $URL = `${this.url}${this.apiToken}`;
+        let renove= new  FormData;
+        renove.append('grant_type', 'refresh_token');
+        renove.append('refresh_token', (JSON.parse(sessionStorage.getItem('user')).stsTokenManager.refreshToken));
+
+        console.log(renove);
+        
+        return this._http.post<any>($URL, renove, HTTP_OPTIONS_MULTIPART);
     }
 }
 

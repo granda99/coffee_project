@@ -9,6 +9,7 @@ export const environment = {
     apiKey: "AIzaSyDa9dMIBTNrEkmszen5rFsR92iPx7CRG_0",
     authDomain: "coffe-ish.firebaseapp.com",
     databaseURL: "https://coffe-ish-default-rtdb.firebaseio.com",
+    refreshTokenUrl: "https://securetoken.googleapis.com/v1/token?key=",
     projectId: "coffe-ish",
     storageBucket: "coffe-ish.appspot.com",
     messagingSenderId: "500110513659",

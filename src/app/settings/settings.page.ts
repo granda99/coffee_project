@@ -25,6 +25,7 @@ export class SettingsPage implements OnInit {
     private authService: UserService,
     private share: SharedService,
     private nodos: nodoServices,
+    private user: UserService,
     private platform: Platform,
     private router: Router
   ) {
@@ -39,7 +40,10 @@ export class SettingsPage implements OnInit {
     this.loadDevices();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const response = await this.user.onIdTokenRevocation();
+    console.log(response);
+
   }
 
   loadDataConfig() {
