@@ -138,6 +138,8 @@ export class SettingsPage implements OnInit {
   async changeStatus(item, from) {
     const response = await this.nodos.changeStatusDevice({ isActive: item.isActive }, item.key).toPromise();
 
+    console.log(from);
+
     if (response.isActive) {
       this.share.showToastColor('', 'El dispositivo: ' + item.nombre + ' está encendido', 's', 's')
     } else {

@@ -11,7 +11,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 export const PRIORIDAD = 999999;
 
-export const labelsParams = ['HT',/*  'PHT', */ 'HA', 'TA', 'LA', 'PA'];
+export const labelsParams = ['HT',/*  'PHT', 'HA',*/  'TA',/* 'LA',*/ 'PA'];
 
 export const colorParams = {
   HT: {
@@ -25,31 +25,36 @@ export const colorParams = {
     backgroundColor: 'rgba(64, 255, 141, 0.2)',
     selected: '#40ff8d',
   }*/
-  HA: {
+  /*HA: {
     sig: 'HA',
     label: 'Humedad del ambiente',
     backgroundColor: 'rgba(64, 180, 255, 0.2)',
     selected: '#40b4ff',
-  },
+  },*/
   TA: {
     sig: 'TA',
     label: 'Temperatura del ambiente',
     backgroundColor: 'rgba(155, 255, 0, 0.2)',
     selected: '#9bff00',
   },
-  LA: {
+  /*LA: {
     sig: 'LA',
     label: 'Luz del ambiente',
     backgroundColor: 'rgba(255, 159, 64, 0.2)',
     selected: '#FFCE56',
-  },
+  },*/
   PA: {
     sig: 'PA',
     label: 'Presión del ambiente',
-    backgroundColor: 'rgba(20, 143, 119, 0.2)',
+    backgroundColor: 'rgba(20, 143, 112, 0.2)',
     selected: '#148F77',
   },
-
+  OUT: {
+    sig: 'OUT',
+    label: 'Restante',
+    backgroundColor: 'rgba(193, 193, 193, 0.5)',
+    selected: '#c1c1c1',
+  }
 }
 
 export const caracteresEspeciales = [
@@ -512,37 +517,53 @@ export class SharedService {
   getColorsParams(param, temp) {
     let color_temp = this.getTempColor(temp);
 
+    let labels = [];
+    let bases = [];
+    let selecteds = [];
+
+    if (param != '') {
+      labels.push(colorParams[param].sig);
+      if (param == 'TA') {
+        bases.push(color_temp[0]);
+        selecteds.push(color_temp[1]);
+      } else {
+        bases.push(colorParams[param].backgroundColor);
+        selecteds.push(colorParams[param].selected);
+      }
+      labels.push(colorParams['OUT'].sig);
+      bases.push(colorParams['OUT'].backgroundColor);
+      selecteds.push(colorParams['OUT'].selected);
+    } else {
+      Object.keys(colorParams).forEach((param) => {
+        if (param != 'OUT') {
+          labels.push(colorParams[param].sig);
+          if (param == 'TA') {
+            bases.push(color_temp[0]);
+            selecteds.push(color_temp[1]);
+          } else {
+            bases.push(colorParams[param].backgroundColor);
+            selecteds.push(colorParams[param].selected);
+          }
+        }
+      });
+    }
     let colors = {
-      labels: labelsParams,
-      base: [
-        'rgba(255, 128, 0, 0.3)',
-        /* 'rgba(64, 255, 141, 0.2)', */
-        'rgba(64, 180, 255, 0.2)',
-        color_temp[0],
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(20, 143, 119, 0.2)'
-      ],
-      selected: [
-        '#ff8000',
-        /* '#40ff8d', */
-        '#40b4ff',
-        color_temp[1],
-        '#FFCE56',
-        '#148F77'
-      ]
+      labels: labels,
+      base: bases,
+      selected: selecteds
     }
-    if (param == "") {
+    /* if (param == "") {
 
-      colors.labels.filter((item) => item !== '')
-      colors.base.filter((item) => item !== 'rgba(193, 193, 193, 0.5)')
-      colors.selected.filter((item) => item !== '#c1c1c1')
-    }
-    if (param != "" && !colors.labels.includes('')) {
+       colors.labels.filter((item) => item !== '')
+       colors.base.filter((item) => item !== 'rgba(193, 193, 193, 0.5)')
+       colors.selected.filter((item) => item !== '#c1c1c1')
+     }
+     if (param != "" && !colors.labels.includes('')) {
 
-      colors.labels.push('')
-      colors.base.push('rgba(193, 193, 193, 0.5)');
-      colors.selected.push('#c1c1c1');
-    }
+       colors.labels.push('')
+       colors.base.push('rgba(193, 193, 193, 0.5)');
+       colors.selected.push('#c1c1c1');
+     }*/
 
     return colors;
   }

@@ -11,7 +11,7 @@
           <ion-icon class="center-element infoI" name="cloud-download-outline"></ion-icon>
         </ion-col>
         <ion-col [hidden]="dowReport" size="5" size-lg>
-          <ion-button (click)="exportData('rep')" class="botton-orange bold" expand="block">REPORTE
+          <ion-button [disabled]="active" (click)="exportData('rep')" class="botton-orange bold" expand="block">REPORTE
           </ion-button>
         </ion-col>
         <ion-col [hidden]="dowReport" size="5" size-lg>
@@ -132,13 +132,13 @@
           </ion-card>
         </ng-template>
 
-        <ng-template swiperSlide>
+        <!--  <ng-template swiperSlide>
           <ion-card style="min-width: 100%;">
             <ion-card-content>
               <canvas #lineCanvas2 style="position: relative; height:25vh; width:40vw;"></canvas>
             </ion-card-content>
           </ion-card>
-        </ng-template>
+        </ng-template> -->
 
         <ng-template swiperSlide>
           <ion-card style="min-width: 100%;">
@@ -148,13 +148,13 @@
           </ion-card>
         </ng-template>
 
-        <ng-template swiperSlide>
+        <!--         <ng-template swiperSlide>
           <ion-card style="min-width: 100%;">
             <ion-card-content>
               <canvas #lineCanvas4 style="position: relative; height:25vh; width:40vw;"></canvas>
             </ion-card-content>
           </ion-card>
-        </ng-template>
+        </ng-template> -->
 
         <ng-template swiperSlide>
           <ion-card style="min-width: 100%;">
@@ -190,7 +190,7 @@
                     </p>
                   </ion-item>
                 </ion-col>
-                <ion-col size="12">
+                <!--  <ion-col size="12">
                   <ion-item>
                     <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
                     <ion-icon slot="end" class="green" name="leaf-outline"></ion-icon>
@@ -198,7 +198,7 @@
                       Humedad del ambiente ({{tot_hum_ambi}} %)
                     </p>
                   </ion-item>
-                </ion-col>
+                </ion-col> -->
                 <ion-col size="12">
                   <ion-item>
                     <ion-icon slot="start" class="red" name="thermometer-outline"></ion-icon>
@@ -207,14 +207,14 @@
                     </p>
                   </ion-item>
                 </ion-col>
-                <ion-col size="12">
+                <!--   <ion-col size="12">
                   <ion-item>
                     <ion-icon slot="start" class="sun" name="sunny-outline"></ion-icon>
                     <p>
                       Luz del ambiente ({{tot_luz_ambi}} %)
                     </p>
                   </ion-item>
-                </ion-col>
+                </ion-col> -->
                 <ion-col size="12">
                   <ion-item>
                     <ion-icon slot="start" class="press" name="cloud-outline"></ion-icon>
@@ -245,13 +245,13 @@
           </ion-card>
         </ng-template>
 
-        <ng-template swiperSlide>
+        <!--         <ng-template swiperSlide>
           <ion-card>
-            <!-- CHART HA -->
+             CHART HA
             <ion-card-content>
               <canvas #doughnutCanvas2 style="position: relative; height:25vh; width:40vw;"></canvas>
             </ion-card-content>
-            <!-- PARAM -->
+            PARAM
             <ion-item>
               <ion-icon slot="start" class="water" name="water-outline"></ion-icon>
               <ion-icon slot="end" class="green" name="leaf-outline"></ion-icon>
@@ -260,7 +260,7 @@
               </p>
             </ion-item>
           </ion-card>
-        </ng-template>
+        </ng-template> -->
 
         <ng-template swiperSlide>
           <ion-card>
@@ -275,7 +275,7 @@
             </ion-item>
           </ion-card>
         </ng-template>
-        <ng-template swiperSlide>
+        <!--   <ng-template swiperSlide>
           <ion-card>
             <ion-card-content>
               <canvas #doughnutCanvas4 style="position: relative; height:25vh; width:40vw;"></canvas>
@@ -287,7 +287,7 @@
               </p>
             </ion-item>
           </ion-card>
-        </ng-template>
+        </ng-template> -->
         <ng-template swiperSlide>
           <ion-card>
             <ion-card-content>

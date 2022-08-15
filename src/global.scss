@@ -30,12 +30,12 @@
 @import '~@ionic/angular/css/ionic-swiper';
 
 div.popover-content {
-    top: 60px !important;
-    left: inherit !important;
-    right: 5px !important;
-    min-width: 350px !important;
-    transform-origin: left top !important;
-    --background: rgba(255, 255, 255, 0.219);
+  top: 60px !important;
+  left: inherit !important;
+  right: 5px !important;
+  min-width: 350px !important;
+  transform-origin: left top !important;
+  --background: rgba(255, 255, 255, 0.219);
 }
 
 /* ion-col{
@@ -43,5 +43,10 @@ div.popover-content {
 } */
 
 ion-toolbar {
-    min-height: 35px !important;
+  min-height: 35px !important;
+}
+
+ion-card {
+  --background: white;
+  border-radius: 30px;
 }

@@ -63,10 +63,9 @@
             <ion-row *ngFor="let item of nodosList ; index as i">
               <ion-col size="12">
                 <ion-item button (click)="expandInfo(i)">
-                  <ion-icon slot="start" name="radio-outline"></ion-icon>
-                  <ion-label> {{item.nombre}}</ion-label>
-                  <ion-icon slot="end" class="connect" [ngClass]="{'error' : !item.isActive}" name="power-outline">
+                  <ion-icon slot="start" class="connect" [ngClass]="{'error' : !item.isActive}" name="radio-outline">
                   </ion-icon>
+                  <ion-label> {{item.nombre}}</ion-label>
                   <ion-icon slot="end" class="connect" [ngClass]="{'error' : !disconect[i]}" name="globe-outline">
                   </ion-icon>
                 </ion-item>
@@ -77,7 +76,8 @@
                   </p>
 
                   <ion-icon slot="end" class="error show" name="power-outline"></ion-icon>
-                  <ion-toggle slot="end" class="show" (ionChange)="changeStatus(item, 'show')" [(ngModel)]="item.isActive">
+                  <ion-toggle slot="end" class="show" (ionChange)="changeStatus(item, 'show')"
+                    [(ngModel)]="item.isActive">
                   </ion-toggle>
                   <ion-icon slot="end" class="connect show" name="power-outline"></ion-icon>
 
@@ -90,7 +90,8 @@
 
                 <ion-item class="data" style="padding-left: 2%; padding-right: 2%;">
                   <ion-icon slot="end" class="error" name="power-outline"></ion-icon>
-                  <ion-toggle slot="end" class="data" (ionChange)="changeStatus(item,  'data')" [(ngModel)]="item.isActive">
+                  <ion-toggle slot="end" class="data" (ionChange)="changeStatus(item,  'data')"
+                    [(ngModel)]="item.isActive">
                   </ion-toggle>
                   <ion-icon slot="end" class="connect" name="power-outline"></ion-icon>
                 </ion-item>

@@ -47,7 +47,7 @@ export class DashboardPage implements OnInit {
   tot_presion = 0;
 
   viewMode: Boolean = false;
-  // Importando ViewChild. Necesitamos el decorador @ViewChild para obtener una referencia a la variable local 
+  // Importando ViewChild. Necesitamos el decorador @ViewChild para obtener una referencia a la variable local
   // que hemos agregado al elemento canvas en la plantilla HTML.
   @ViewChild('barCanvas') private barCanvas: ElementRef;
   @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
@@ -55,9 +55,9 @@ export class DashboardPage implements OnInit {
 
   @ViewChild('doughnut1') private doughnut1: ElementRef;
   @ViewChild('doughnut2') private doughnut2: ElementRef;
-  @ViewChild('doughnut3') private doughnut3: ElementRef;
+  //@ViewChild('doughnut3') private doughnut3: ElementRef;
   @ViewChild('doughnut4') private doughnut4: ElementRef;
-  @ViewChild('doughnut5') private doughnut5: ElementRef;
+  //@ViewChild('doughnut5') private doughnut5: ElementRef;
   @ViewChild('doughnut6') private doughnut6: ElementRef;
 
   barChart: any;
@@ -78,9 +78,12 @@ export class DashboardPage implements OnInit {
     });
 
   }
+  ngOnInit() {
+  }
+
 
   // Cuando intentamos llamar a nuestro gráfico para inicializar métodos en ngOnInit(),
-  // muestra un error nativeElement de undefined. Por lo tanto, debemos llamar a todos 
+  // muestra un error nativeElement de undefined. Por lo tanto, debemos llamar a todos
   //los métodos de gráfico en ngAfterViewInit() donde se resolverán @ViewChild y @ViewChildren.
   async ionViewWillEnter() {
     this.getDate();
@@ -90,18 +93,14 @@ export class DashboardPage implements OnInit {
     this.polarAreaMethod();
   }
 
-  ngOnInit() {
-
-  }
-
   changeChart() {
     this.viewMode = !this.viewMode;
   }
 
   barChartMethod() {
-    // Ahora necesitamos proporcionar una referencia de elemento de gráfico con un objeto que 
+    // Ahora necesitamos proporcionar una referencia de elemento de gráfico con un objeto que
     //defina el tipo de gráfico que queremos usar y el tipo de datos que queremos mostrar.
-    let newData: number[] = [this.tot_hum_tierra ?? 0, /* this.tot_ph,  */this.tot_hum_ambi ?? 0, this.tot_temp_ambi ?? 0, this.tot_luz_ambi ?? 0, this.tot_presion ?? 0]
+    let newData: number[] = [this.tot_hum_tierra ?? 0, /* this.tot_ph, this.tot_hum_ambi ?? 0, */ this.tot_temp_ambi ?? 0,/* this.tot_luz_ambi ?? 0,*/ this.tot_presion ?? 0]
 
     let color_temp = this.share.getTempColor(this.tot_temp_ambi);
 
@@ -115,17 +114,17 @@ export class DashboardPage implements OnInit {
           backgroundColor: [
             'rgba(255, 128, 0, 0.3)',
             /* 'rgba(64, 255, 141, 0.2)', */
-            'rgba(64, 180, 255, 0.2)',
+            /* 'rgba(64, 180, 255, 0.2)', */
             color_temp[0],
-            'rgba(255, 159, 64, 0.2)',
+            /* 'rgba(255, 159, 64, 0.2)', */
             'rgba(20, 143, 119, 0.2)'
           ],
           borderColor: [
             'rgba(255, 128, 0, 1)',
             /*  'rgba(64, 255, 141, 1)', */
-            'rgba(64, 180, 255, 1)',
+            /* 'rgba(64, 180, 255, 1)', */
             color_temp[2],
-            'rgba(255, 159, 64, 1)',
+            /* 'rgba(255, 159, 64, 1)', */
             'rgba(20, 143, 119, 1)'
           ],
           borderWidth: 1
@@ -179,7 +178,7 @@ export class DashboardPage implements OnInit {
       }
     });
 
-    this.doughnutChart = new Chart(this.doughnut3.nativeElement, {
+    /*this.doughnutChart = new Chart(this.doughnut3.nativeElement, {
       type: 'doughnut',
       data: {
         labels: ['Humedad del ambiente'],
@@ -196,7 +195,7 @@ export class DashboardPage implements OnInit {
           ]
         }]
       }
-    });
+    });*/
     this.doughnutChart = new Chart(this.doughnut4.nativeElement, {
       type: 'doughnut',
       data: {
@@ -215,7 +214,7 @@ export class DashboardPage implements OnInit {
         }]
       }
     });
-    this.doughnutChart = new Chart(this.doughnut5.nativeElement, {
+    /*this.doughnutChart = new Chart(this.doughnut5.nativeElement, {
       type: 'doughnut',
       data: {
         labels: ['Luz del ambiente'],
@@ -232,7 +231,7 @@ export class DashboardPage implements OnInit {
           ]
         }]
       }
-    });
+    });*/
 
     this.doughnutChart = new Chart(this.doughnut6.nativeElement, {
       type: 'doughnut',
@@ -260,7 +259,7 @@ export class DashboardPage implements OnInit {
       labels: settings.labels,
       datasets: [{
         //label: 'My First Dataset',
-        data: [this.tot_hum_tierra ?? 0, /* this.tot_ph, */ this.tot_hum_ambi ?? 0, this.tot_temp_ambi ?? 0, this.tot_luz_ambi ?? 0, this.tot_presion ?? 0],
+        data: [this.tot_hum_tierra ?? 0, /* this.tot_ph,  this.tot_hum_ambi ?? 0,*/ this.tot_temp_ambi ?? 0,/* this.tot_luz_ambi ?? 0,*/ this.tot_presion ?? 0],
         backgroundColor: settings.base,
         hoverBackgroundColor: settings.selected
       }]

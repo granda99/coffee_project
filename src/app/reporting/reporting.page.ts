@@ -43,38 +43,37 @@ export class ReportingPage implements OnInit {
   showLine: Boolean = true;
   showReportInfo: Boolean = true;
   active: Boolean = true;
-  activeParam: Boolean = true;
   showReport = [false, false, false, false];
 
-  // Importando ViewChild. Necesitamos el decorador @ViewChild para obtener una referencia a la variable local 
+  // Importando ViewChild. Necesitamos el decorador @ViewChild para obtener una referencia a la variable local
   // que hemos agregado al elemento canvas en la plantilla HTML.
   @ViewChild('lineCanvas') private lineCanvas: ElementRef;
   @ViewChild('lineCanvas1') private lineCanvas1: ElementRef;
-  @ViewChild('lineCanvas2') private lineCanvas2: ElementRef;
+  //@ViewChild('lineCanvas2') private lineCanvas2: ElementRef;
   @ViewChild('lineCanvas3') private lineCanvas3: ElementRef;
-  @ViewChild('lineCanvas4') private lineCanvas4: ElementRef;
+  //@ViewChild('lineCanvas4') private lineCanvas4: ElementRef;
   @ViewChild('lineCanvas5') private lineCanvas5: ElementRef;
-  @ViewChild('lineCanvas6') private lineCanvas6: ElementRef;
+  //@ViewChild('lineCanvas6') private lineCanvas6: ElementRef;
 
   @ViewChild('doughnutCanvas') private doughnutCanvas: ElementRef;
   @ViewChild('doughnutCanvas1') private doughnutCanvas1: ElementRef;
-  @ViewChild('doughnutCanvas2') private doughnutCanvas2: ElementRef;
+  //@ViewChild('doughnutCanvas2') private doughnutCanvas2: ElementRef;
   @ViewChild('doughnutCanvas3') private doughnutCanvas3: ElementRef;
-  @ViewChild('doughnutCanvas4') private doughnutCanvas4: ElementRef;
+  //@ViewChild('doughnutCanvas4') private doughnutCanvas4: ElementRef;
   @ViewChild('doughnutCanvas5') private doughnutCanvas5: ElementRef;
 
   lineChart: any;
   lineChart1: any;
-  lineChart2: any;
+  //lineChart2: any;
   lineChart3: any;
-  lineChart4: any;
+  //lineChart4: any;
   lineChart5: any;
 
   doughnutChart: any;
   doughnutChart1: any;
-  doughnutChart2: any;
+  //doughnutChart2: any;
   doughnutChart3: any;
-  doughnutChart4: any;
+  //doughnutChart4: any;
   doughnutChart5: any;
 
   config: SwiperOptions = {
@@ -132,14 +131,12 @@ export class ReportingPage implements OnInit {
 
   selectedAnio(anio) {
     if (anio != "") {
-      this.activeParam = false
       this.anio = anio;
       this.showLine = false;
       this.calcularValoresAnio();
     }
     else {
       this.showReportInfo = true;
-      this.activeParam = true;
     }
     //this.show = true;
   }
@@ -166,6 +163,7 @@ export class ReportingPage implements OnInit {
 
         if (i.getTime() > f.getTime() || f.getTime() < i.getTime()) {
           this.share.showToastColor('Alerta!!', 'Seleccione un rango de fechas válido', 'w', 's');
+          return false;
         } else {
           Object.keys(this.jsonObj).forEach((k) => {
             let kDate = this.share.jsonDate(this.jsonObj[k].fecha);
@@ -218,6 +216,8 @@ export class ReportingPage implements OnInit {
         });
         break;
     }
+
+    return true;
   }
 
   dataListParam(meses, p) {
@@ -317,14 +317,14 @@ export class ReportingPage implements OnInit {
     this.lineChart1.update();
 
 
-    this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
-      type: 'line',
-      data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        datasets: this.prepareDataLine(this.meses, "HA"),
-      }
-    });
-    this.lineChart2.update();
+    /* this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
+       type: 'line',
+       data: {
+         labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+         datasets: this.prepareDataLine(this.meses, "HA"),
+       }
+     });
+     this.lineChart2.update();*/
 
 
     this.lineChart3 = new Chart(this.lineCanvas3.nativeElement, {
@@ -337,14 +337,14 @@ export class ReportingPage implements OnInit {
     this.lineChart3.update();
 
 
-    this.lineChart4 = new Chart(this.lineCanvas4.nativeElement, {
-      type: 'line',
-      data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        datasets: this.prepareDataLine(this.meses, "LA"),
-      }
-    });
-    this.lineChart4.update();
+    /* this.lineChart4 = new Chart(this.lineCanvas4.nativeElement, {
+       type: 'line',
+       data: {
+         labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+         datasets: this.prepareDataLine(this.meses, "LA"),
+       }
+     });
+     this.lineChart4.update();*/
 
 
     this.lineChart5 = new Chart(this.lineCanvas5.nativeElement, {
@@ -360,8 +360,18 @@ export class ReportingPage implements OnInit {
   }
 
   exportData(op) {
-    let fileName = 'DataSet completo';
+    let fileName = 'Coffee-ISH-DataSet';
     this.dataset = [];
+
+    let entry: tableDataset = {
+      DISPOSITIVO: 'Nombre según keyDevice',
+      FECHA_HORA: 'DD/MM/YYYY HH:mm:ss',
+      HUMEDAD: 'Porcentaje (%)',
+      TEMPERATURA: 'Grados Centígrados (°C)',
+      PRESIÓN: 'Libras por pulgada cuadrada (PSI)'
+    }
+
+    this.dataset.push(entry);
     if (op != 'all') {
       fileName = 'Coffee-ISH-Reporte-' + this.reportTitle;
       for (let key of this.filtro) {
@@ -376,22 +386,21 @@ export class ReportingPage implements OnInit {
         }
       }
     }
-
     this.dataActions.exportToExcel(this.dataset, fileName)
 
   }
 
   jsonToTable(json: any): tableDataset {
     let item: tableDataset = {
-      dispositivo: json.dispositivo,
-      usuario: json.usuario,
-      Humedad_tierra: json.parametros_tierra.HT,
+      DISPOSITIVO: json.dispositivo,
+      //usuario: json.usuario,
+      FECHA_HORA: json.fecha + ' ' + json.hora ?? 'No hour',
+      HUMEDAD: this.share.trunc(json.parametros_tierra.HT, 0),
       /* PH_tierra: json.parametros_tierra.PH, */
-      Humedad_ambiente: json.parametros_ambiente.HA,
-      Luz_ambiente: json.parametros_ambiente.LA,
-      Tempetarura_ambiente: json.parametros_ambiente.TA,
-      Presion: json.parametros_ambiente.PA,
-      fecha: json.fecha,
+      /*Humedad_ambiente: json.parametros_ambiente.HA,*/
+      /*Luz_ambiente: json.parametros_ambiente.LA,*/
+      TEMPERATURA: this.share.trunc(json.parametros_ambiente.TA, 0),
+      PRESIÓN: json.parametros_ambiente.PA,
     };
     return item;
   }
@@ -400,27 +409,32 @@ export class ReportingPage implements OnInit {
     this.showLine = true;
     this.fechaInit = this.share.toShortDate(value)
     if (this.reportTitle != 'Rango') {
-      this.activeParam = false;
-      this.filtrarLista(this.reportTitle);
-      this.calcularValores();
+      if (this.filtrarLista(this.reportTitle))
+        this.calcularValores();
+      else
+        this.showReportInfo = true;
     } else {
       if (this.fechaFin.length > 0) {
-        this.filtrarLista(this.reportTitle);
+        if (this.filtrarLista(this.reportTitle))
+          this.calcularValores();
+        else
+          this.showReportInfo = true;
       }
     }
   }
 
   dateEnd(value) {
     this.fechaFin = this.share.toShortDate(value)
-    this.activeParam = false;
-    this.filtrarLista(this.reportTitle);
-    this.calcularValores();
+
+    if (this.filtrarLista(this.reportTitle))
+      this.calcularValores();
+    else
+      this.showReportInfo = true;
   }
 
   async selectReport(value) {
     await this.share.startLoading();
     this.showReportInfo = true;
-    this.activeParam = true;
     this.showReport = [false, false, false, false];
     this.reportTitle = value;
     this.fechaInit = "";
@@ -462,55 +476,54 @@ export class ReportingPage implements OnInit {
     this.showReportInfo = false;
     this.doughnutChart = null;
     this.doughnutChart1 = null;
-    this.doughnutChart2 = null;
+    //this.doughnutChart2 = null;
     this.doughnutChart3 = null;
-    this.doughnutChart4 = null;
+    //this.doughnutChart4 = null;
     this.doughnutChart5 = null;
     let cien;
     /* TODOS LOS PARÁMETROS */
     let allData: number[];
-    if (this.tot_hum_tierra > 0 && this.tot_hum_ambi > 0 && this.tot_temp_ambi > 0 && this.tot_luz_ambi > 0 && this.tot_presion > 0)
-      allData = [this.tot_hum_tierra, this.tot_hum_ambi, this.tot_temp_ambi, this.tot_luz_ambi, this.tot_presion]
+    if (this.tot_hum_tierra > 0 && this.tot_temp_ambi > 0 && this.tot_presion > 0)
+      allData = [this.tot_hum_tierra, /*this.tot_hum_ambi,*/ this.tot_temp_ambi, /*this.tot_luz_ambi, */this.tot_presion]
     else {
-      allData = [0, 0, 0, 0, 0, 100]
-
+      allData = [0, 0, 0, 100]
     }
     let ht: number[];
-    let ha: number[];
+    //let ha: number[];
     let ta: number[];
-    let la: number[];
+    //let la: number[];
     let pa: number[];
 
 
     /* HUMEDAD DE LA TIERRA */
-    cien = this.share.trunc(100 - this.tot_hum_tierra, 2);
-    ht = [this.tot_hum_tierra, 0, 0, 0, 0, cien];
+    cien = this.share.trunc(100 - this.tot_hum_tierra, 0);
+    ht = [this.tot_hum_tierra, cien];
 
     /*  case "PH":
         cien = 100 - this.tot_ph
        break; */
 
     /* HUMEDAD DEL AMBIENTE */
-    cien = this.share.trunc(100 - this.tot_hum_ambi, 2);
-    ha = [0, this.tot_hum_ambi, 0, 0, 0, cien];
+    /* cien = this.share.trunc(100 - this.tot_hum_ambi, 0);
+    ha = [0, this.tot_hum_ambi, 0, 0, 0, cien]; */
 
     /* TEMPERATURA DEL AMBIENTE */
-    cien = this.share.trunc(100 - this.tot_temp_ambi, 2);
-    ta = [0, 0, this.tot_temp_ambi, 0, 0, cien];
+    cien = this.share.trunc(100 - this.tot_temp_ambi, 0);
+    ta = [this.tot_temp_ambi, cien];
 
 
     /* LUZ DEL AMBIENTE */
-    cien = this.share.trunc(100 - this.tot_luz_ambi, 2);
-    la = [0, 0, 0, this.tot_luz_ambi, 0, cien]
+    /* cien = this.share.trunc(100 - this.tot_luz_ambi, 0);
+    la = [0, 0, 0, this.tot_luz_ambi, 0, cien] */
 
     /* PRESION DEL AMBIENTE */
-    cien = this.share.trunc(100 - this.tot_presion, 2);
-    pa = [0, 0, 0, 0, this.tot_presion, cien]
+    cien = this.share.trunc(100 - this.tot_presion, 0);
+    pa = [this.tot_presion, cien]
 
 
 
     /*COLORES Y VARIACIÓN DEL COLOR, PARA LA TEMPERATURA, BAJA AZUL, MEDIA AMARILLA, ALTA ROJA */
-    let colors = this.share.getColorsParams(this.param, this.tot_temp_ambi);
+    let colors = this.share.getColorsParams('', this.tot_temp_ambi);
 
     this.doughnutChart = new Chart(this.doughnutCanvas.nativeElement, {
       type: 'doughnut',
@@ -525,10 +538,11 @@ export class ReportingPage implements OnInit {
       }
     });
 
+    colors = this.share.getColorsParams('HT', 0);
     this.doughnutChart1 = new Chart(this.doughnutCanvas1.nativeElement, {
       type: 'doughnut',
       data: {
-        //labels: colors.labels,
+        labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: ht,
@@ -538,7 +552,7 @@ export class ReportingPage implements OnInit {
       }
     });
 
-    this.doughnutChart2 = new Chart(this.doughnutCanvas2.nativeElement, {
+    /* this.doughnutChart2 = new Chart(this.doughnutCanvas2.nativeElement, {
       type: 'doughnut',
       data: {
         //labels: colors.labels,
@@ -549,12 +563,13 @@ export class ReportingPage implements OnInit {
           hoverBackgroundColor: colors.selected
         }]
       }
-    });
+    }); */
 
+    colors = this.share.getColorsParams('TA', this.tot_temp_ambi);
     this.doughnutChart3 = new Chart(this.doughnutCanvas3.nativeElement, {
       type: 'doughnut',
       data: {
-        //labels: colors.labels,
+        labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: ta,
@@ -564,7 +579,7 @@ export class ReportingPage implements OnInit {
       }
     });
 
-    this.doughnutChart4 = new Chart(this.doughnutCanvas4.nativeElement, {
+    /* this.doughnutChart4 = new Chart(this.doughnutCanvas4.nativeElement, {
       type: 'doughnut',
       data: {
         //labels: colors.labels,
@@ -575,12 +590,13 @@ export class ReportingPage implements OnInit {
           hoverBackgroundColor: colors.selected
         }]
       }
-    });
+    }); */
 
+    colors = this.share.getColorsParams('PA', 0);
     this.doughnutChart5 = new Chart(this.doughnutCanvas5.nativeElement, {
       type: 'doughnut',
       data: {
-        //labels: colors.labels,
+        labels: colors.labels,
         datasets: [{
           label: '# of Votes',
           data: pa,
@@ -601,27 +617,29 @@ export class ReportingPage implements OnInit {
 
         this.tot_hum_tierra += parseFloat(typeParams.parametros_tierra.HT ?? 0);
         /*  this.tot_ph += parseFloat(typeParams.parametros_tierra.PH?? 0); */
-        this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
+        //this.tot_hum_ambi += parseFloat(typeParams.parametros_ambiente.HA ?? 0);
         this.tot_temp_ambi += parseFloat(typeParams.parametros_ambiente.TA ?? 0);
-        this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
+        //this.tot_luz_ambi += parseFloat(typeParams.parametros_ambiente.LA ?? 0);
         this.tot_presion += parseFloat(typeParams.parametros_ambiente.PA ?? 0);
       }
       if (this.cont > 0) {
         this.tot_hum_tierra /= this.cont;
-        this.tot_hum_tierra = this.share.trunc(this.tot_hum_tierra, 2)
+        this.tot_hum_tierra = this.share.trunc(this.tot_hum_tierra, 0)
         /* this.tot_ph /= this.cont; */
-        this.tot_hum_ambi /= this.cont;
-        this.tot_hum_ambi = this.share.trunc(this.tot_hum_ambi, 2)
+        /* this.tot_hum_ambi /= this.cont;
+         this.tot_hum_ambi = this.share.trunc(this.tot_hum_ambi, 0) */
         this.tot_temp_ambi /= this.cont;
-        this.tot_temp_ambi = this.share.trunc(this.tot_temp_ambi, 2)
-        this.tot_luz_ambi /= this.cont;
-        this.tot_luz_ambi = this.share.trunc(this.tot_luz_ambi, 2)
+        this.tot_temp_ambi = this.share.trunc(this.tot_temp_ambi, 0)
+        /* this.tot_luz_ambi /= this.cont;
+            this.tot_luz_ambi = this.share.trunc(this.tot_luz_ambi, 0) */
         this.tot_presion /= this.cont;
-        this.tot_presion = this.share.trunc(this.tot_presion, 2)
+        this.tot_presion = this.share.trunc(this.tot_presion, 0)
       }
       this.share.stopLoading();
       this.doughnutChartMethod()
     } catch (ex) {
+      console.log(ex);
+
       this.showReportInfo = true;
       this.share.showToastColor('No se encontró datos', 'No hay datos disponibles para la fecha seleccionada', 'w', 's');
       this.share.stopLoading();
@@ -662,8 +680,8 @@ export class ReportingPage implements OnInit {
         this.cont = 1;
 
       month.HT /= this.cont;
-      month.HA /= this.cont;
-      month.LA /= this.cont;
+      //month.HA /= this.cont;
+      //month.LA /= this.cont;
       month.TA /= this.cont;
       month.PA /= this.cont;
 

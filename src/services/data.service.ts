@@ -11,7 +11,7 @@ export class DataService {
 
   constructor(
     private share: SharedService,
-   // private exportAsService: ExportAsService
+    // private exportAsService: ExportAsService
   ) { }
 
   async exportToExcel(data, filename) {
@@ -22,20 +22,20 @@ export class DataService {
       XLSX.writeFile(wb, filename + '.xlsx');
 
     } catch (ex) {
-      this.share.showToastColor('', ex, 'w', 'l')
+      this.share.showToastColor('', ex, 'w', 'l');
     }
   }
 
 }
 
 export interface tableDataset {
-  dispositivo: string;
-  usuario: string;
-  Humedad_tierra: string;
- /*  PH_tierra: string; */
-  Humedad_ambiente: string;
-  Luz_ambiente: string;
-  Tempetarura_ambiente: string;
-  Presion: string;
-  fecha: string;
+  DISPOSITIVO: string;
+  //usuario: string;
+  FECHA_HORA: string;
+  HUMEDAD: string;
+  /*  PH_tierra: string; */
+  /*Humedad_ambiente: string;*/
+  /*Luz_ambiente: string;*/
+  TEMPERATURA: string;
+  PRESIÓN: string;
 }
