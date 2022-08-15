@@ -9,7 +9,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "install-fb-tools": "npm install -g firebase-tools",
+    "fb-login": "firebase login",
+    "fb-deploy": "firebase deploy"
   },
   "private": true,
   "dependencies": {
