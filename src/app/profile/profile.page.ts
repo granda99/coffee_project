@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CameraOptions } from '@awesome-cordova-plugins/camera';
-import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+
 import { ActionSheetController, Platform } from '@ionic/angular';
-import { map, take } from 'rxjs/operators';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 import { FotoModalComponent } from '../foto-modal/foto-modal.component';
+
+import { Camera, CameraResultType, CameraSource, GalleryImageOptions, ImageOptions, } from "@capacitor/camera";
+import { Router } from '@angular/router';
+
+import { Filesystem } from "@capacitor/filesystem";
 
 @Component({
   selector: 'app-profile',
@@ -28,9 +30,8 @@ export class ProfilePage implements OnInit {
     private share: SharedService,
     private user: UserService,
     public actionSheetController: ActionSheetController,
-    private camera: Camera,
     private platform: Platform,
-    private router: Router
+    private router: Router,
   ) {
     this.platform.backButton.subscribeWithPriority(PRIORIDAD, async () => {
       if (this.router.url == '/tabs/profile')
@@ -43,26 +44,22 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  cameraOptions: CameraOptions = {
-    quality: 25,
-    targetWidth: 640,
-    targetHeight: 640,
+  cameraOptions: ImageOptions = {
+    quality: 50,
+    width: 640,
+    height: 640,
     correctOrientation: true,
-    destinationType: this.camera.DestinationType.DATA_URL,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE,
+    resultType: CameraResultType.DataUrl,
+    source: CameraSource.Camera
   }
 
-  galleryOptions: CameraOptions = {
-    quality: 25,
-    targetWidth: 640,
-    targetHeight: 640,
+  galleryOptions: GalleryImageOptions = {
+    quality: 50,
+    width: 640,
+    height: 640,
     correctOrientation: true,
-    destinationType: this.camera.DestinationType.DATA_URL,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE,
-    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-  }
+    limit: 1
+  };
 
   ionViewWillEnter() {
     this.infoUser = JSON.parse(sessionStorage.getItem('infoUser'));
@@ -117,28 +114,33 @@ export class ProfilePage implements OnInit {
   }
 
   async openCamera() {
-    this.camera.getPicture(this.cameraOptions).then(async (imgData) => {
-      this.base64Img = 'data:image/jpeg;base64,' + imgData;
-      this.infoUser.photoURL = this.base64Img;
-      this.updateInfoUser();
-    }, (err) => {
-      console.log(err);
-    });
+    Camera.getPhoto(this.cameraOptions).then(
+      async (imgData) => {
+        this.base64Img = imgData.dataUrl;;
+        this.infoUser.photoURL = this.base64Img;
+        this.updateInfoUser();
+      }, (err) => {
+        console.log(err);
+      });
   }
 
   async openGallery() {
-    this.camera.getPicture(this.galleryOptions).then(async (imgData) => {
-      this.base64Img = 'data:image/jpeg;base64,' + imgData;
-      if (!this.base64Img) {
-        this.share.showToast("Imagen no válida");
-        return;
-      }
-      this.infoUser.photoURL = this.base64Img;
-      this.updateInfoUser();
+    Camera.pickImages(this.galleryOptions).then(
+      async (imgData) => {
+        const contents = await Filesystem.readFile({
+          path: imgData.photos[0].path,
+        });
+        this.base64Img = "data:image/jpeg;base64," + contents.data;
+        if (!this.base64Img) {
+          this.share.showToast("Imagen no válida");
+          return;
+        }
+        this.infoUser.photoURL = this.base64Img;
+        this.updateInfoUser();
 
-    }, (err) => {
-      this.share.showToastColor('Surgió un error!!', 'Error: ' + err, 'd', 's')
-    });
+      }, (err) => {
+        this.share.showToastColor('Surgió un error!!', 'Error: ' + err, 'd', 's')
+      });
   }
 
   updateInfoUser() {
