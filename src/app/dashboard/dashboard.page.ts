@@ -254,7 +254,7 @@ export class DashboardPage implements OnInit {
   polarAreaMethod() {
     let settings = this.share.getColorsParams('', this.tot_temp_ambi);
     const data = {
-      labels: settings.labels,
+      labels: labelsParams,
       datasets: [{
         //label: 'My First Dataset',
         data: [this.tot_hum_tierra ?? 0, /* this.tot_ph,  this.tot_hum_ambi ?? 0,*/ this.tot_temp_ambi ?? 0,/* this.tot_luz_ambi ?? 0,*/ this.tot_presion ?? 0],

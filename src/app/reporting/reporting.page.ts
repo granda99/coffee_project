@@ -232,30 +232,32 @@ export class ReportingPage implements OnInit {
 
     if (p == "")
       Object.keys(colorParams).forEach((p) => {
-        let newParam = {
-          label: colorParams[p].sig,
-          fill: true,
-          lineTension: 0.1,
-          //backgroundColor: colorParams[p].backgroundColor,
-          borderColor: colorParams[p].selected,
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: colorParams[p].selected,
-          pointBackgroundColor: '#fff',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: colorParams[p].selected,
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: this.dataListParam(meses, p),
-          spanGaps: false,
-        }
+        if (colorParams[p].sig != 'OUT') {
+          let newParam = {
+            label: colorParams[p].label,
+            fill: true,
+            lineTension: 0.1,
+            //backgroundColor: colorParams[p].backgroundColor,
+            borderColor: colorParams[p].selected,
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: colorParams[p].selected,
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: colorParams[p].selected,
+            pointHoverBorderColor: 'rgba(220,220,220,1)',
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: this.dataListParam(meses, p),
+            spanGaps: false,
+          }
 
-        dataList.push(newParam);
+          dataList.push(newParam);
+        }
       });
 
     else {
@@ -267,7 +269,7 @@ export class ReportingPage implements OnInit {
       });
 
       dataList.push({
-        label: colorParams[p].sig,
+        label: colorParams[p].label,
         fill: true,
         lineTension: 0.1,
         backgroundColor: colorParams[p].backgroundColor,

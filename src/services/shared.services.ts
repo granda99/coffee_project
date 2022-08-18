@@ -11,7 +11,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 export const PRIORIDAD = 999999;
 
-export const labelsParams = ['HT',/*  'PHT', 'HA',*/  'TA',/* 'LA',*/ 'PA'];
+export const labelsParams = ['Humedad de la Tierra',/*  'PHT', 'HA',*/  'Temperatura Ambiente',/* 'LA',*/ 'Presión Ambiente'];
 
 export const colorParams = {
   HT: {
@@ -531,7 +531,7 @@ export class SharedService {
     let selecteds = [];
 
     if (param != '') {
-      labels.push(colorParams[param].sig);
+      labels.push(colorParams[param].label);
       if (param == 'TA') {
         bases.push(color_temp[0]);
         selecteds.push(color_temp[1]);
@@ -539,13 +539,13 @@ export class SharedService {
         bases.push(colorParams[param].backgroundColor);
         selecteds.push(colorParams[param].selected);
       }
-      labels.push(colorParams['OUT'].sig);
+      labels.push(colorParams['OUT'].label);
       bases.push(colorParams['OUT'].backgroundColor);
       selecteds.push(colorParams['OUT'].selected);
     } else {
       Object.keys(colorParams).forEach((param) => {
         if (param != 'OUT') {
-          labels.push(colorParams[param].sig);
+          labels.push(colorParams[param].label);
           if (param == 'TA') {
             bases.push(color_temp[0]);
             selecteds.push(color_temp[1]);
