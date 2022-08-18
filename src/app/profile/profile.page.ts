@@ -17,6 +17,7 @@ import { Filesystem } from "@capacitor/filesystem";
 })
 export class ProfilePage implements OnInit {
 
+  minutes;
   fechaNacimiento;
   infoUser;
   base64Img;
@@ -31,6 +32,7 @@ export class ProfilePage implements OnInit {
     private user: UserService,
     public actionSheetController: ActionSheetController,
     private platform: Platform,
+    private authServ: UserService,
     private router: Router,
   ) {
     this.platform.backButton.subscribeWithPriority(PRIORIDAD, async () => {
@@ -67,6 +69,10 @@ export class ProfilePage implements OnInit {
       this.infoUser.telf = "";
     if (!this.infoUser.fechaNacimiento)
       this.infoUser.fechaNacimiento = "Vacío";
+
+    this.fechaNacimiento = this.share.toShortDate(this.infoUser.fechaNacimiento);
+
+    this.calculateTimeSession();
   }
 
   ngOnInit() {
@@ -169,6 +175,10 @@ export class ProfilePage implements OnInit {
     this.share.logout();
   }
 
+  hiddenPick() {
+    this.showCalendar = false;
+  }
+
   showDatePick() {
     if (this.isEdit)
       this.showCalendar = true;
@@ -176,9 +186,47 @@ export class ProfilePage implements OnInit {
       this.showCalendar = false;
   }
 
-  selectDate() {
+  selectDate(fecha) {
     this.showCalendar = false;
-    this.infoUser.fechaNacimiento = this.share.toShortDate(this.fechaNacimiento);
+    this.infoUser.fechaNacimiento = this.share.toShortDate(fecha);
+  }
+
+  async renoveSession() {
+    try {
+      const response = await this.authServ.onIdTokenRevocation().toPromise();
+      console.log(response);
+
+      let newStsTokenManager = {
+        refreshToken: response.refresh_token,
+        accessToken: response.access_token,
+        expirationTime: this.share.setTimeExpire()
+      }
+
+      let user = JSON.parse(sessionStorage.getItem('user'));
+      user.stsTokenManager = newStsTokenManager;
+
+      sessionStorage.setItem('user', JSON.stringify(user));
+
+      this.share.showToastColor('Correcto!!', 'su sesión se validó por 60 minutos más.', 's', 'm')
+
+      this.calculateTimeSession();
+
+    } catch (ex) {
+      this.share.showToastColor('Erorr!!', 'No pudo renovarse la sesión, vuelva a iniciar', 'd', 'm')
+      console.log(ex);
+    }
+
+  }
+
+  calculateTimeSession() {
+    let time = JSON.parse(sessionStorage.getItem('user')).stsTokenManager.expirationTime;
+
+    let expire = new Date(time);
+    let now = new Date();
+
+    var dif = (expire.getTime() - now.getTime());
+    this.minutes = Math.round((dif / 1000) / 60);
+    console.log(this.minutes);
   }
 }
 

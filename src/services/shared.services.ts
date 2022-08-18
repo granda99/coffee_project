@@ -111,6 +111,12 @@ export var HTTP_OPTIONS_MULTIPART = {
   }),
 };
 
+export var HTTP_OPTIONS_FORM = {
+  headers: new HttpHeaders({
+    "Content-Type": "application/x-www-form-urlencoded"
+  })
+};
+
 export var currentModal = null;
 export var currentModal2 = null;
 
@@ -511,7 +517,10 @@ export class SharedService {
       return fecha[1] + '-' + fecha[0] + '-' + fecha[2];
     }
 
-    return fecha[2] + '/' + fecha[1] + '/' + fecha[0];
+    if (fecha[2].length > 2)
+      return fecha[1] + '/' + fecha[0] + '/' + fecha[2];
+    else
+      return fecha[2] + '/' + fecha[1] + '/' + fecha[0];
   }
 
   getColorsParams(param, temp) {
@@ -566,5 +575,13 @@ export class SharedService {
      }*/
 
     return colors;
+  }
+
+  setTimeExpire() {
+    var now = new Date();
+    var addMlSeconds = 60 * 60000;
+    var expire = new Date(now.getTime() + addMlSeconds);
+
+    return expire.getTime();
   }
 }

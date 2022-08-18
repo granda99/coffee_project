@@ -4,7 +4,6 @@ import { Platform } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import { nodoServices } from 'src/services/nodoServices';
 import { labelsParams, PRIORIDAD, SharedService } from 'src/services/shared.services';
-import { UserService } from 'src/services/user.service';
 import { SwiperOptions } from 'swiper';
 import { InfoCardComponent } from '../components/infoCard/infoCard.component';
 
@@ -67,7 +66,6 @@ export class DashboardPage implements OnInit {
 
   constructor(
     private nodos: nodoServices,
-    private authServ: UserService,
     private share: SharedService,
     private platform: Platform,
     private router: Router

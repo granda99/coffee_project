@@ -3,7 +3,7 @@
 </ion-header>
 
 <ion-content class="back">
-  <div>
+  <div class="scroll">
     <ion-row class="hidden">
       <ion-col class="hidden" size="12"><br></ion-col>
     </ion-row>
@@ -159,9 +159,13 @@
             </ion-input>
           </ion-col>
         </ion-row>
-        <ion-datetime (ionChange)="selectDate()" presentation="date" [(ngModel)]="fechaNacimiento"
-          [hidden]="!showCalendar" class="float" [showDefaultButtons]="true" doneText="Aceptar" cancelText="Cancelar">
-
+        <ion-datetime #datetime (ionCancel)="hiddenPick()" (ionChange)="selectDate(datetime.value)" presentation="date"
+          [(ngModel)]="fechaNacimiento" [hidden]="!showCalendar" class="float">
+          <ion-buttons slot="buttons">
+            <!--  <ion-button color="danger" (click)="datetime.reset()">Reset</ion-button> -->
+            <ion-button color="primary" (click)="datetime.confirm()">Aceptar</ion-button>
+            <ion-button color="primary" (click)="datetime.cancel()">Cancelar</ion-button>
+          </ion-buttons>
         </ion-datetime>
       </ion-col>
       <ion-col size="1"></ion-col>
@@ -180,9 +184,13 @@
             </ion-input>
           </ion-col>
         </ion-row>
-        <ion-datetime (ionChange)="selectDate()" presentation="date" [(ngModel)]="fechaNacimiento"
-          [hidden]="!showCalendar" class="float" [showDefaultButtons]="true" doneText="Aceptar" cancelText="Cancelar">
-
+        <ion-datetime #datetime (ionChange)="selectDate(datetime.value)" presentation="date"
+          [(ngModel)]="fechaNacimiento" [hidden]="!showCalendar" class="float">
+          <ion-buttons slot="buttons">
+            <!--  <ion-button color="danger" (click)="datetime.reset()">Reset</ion-button> -->
+            <ion-button color="primary" (click)="datetime.confirm()">Aceptar</ion-button>
+            <ion-button color="primary" (click)="datetime.cancel()">Cancelar</ion-button>
+          </ion-buttons>
         </ion-datetime>
       </ion-col>
       <ion-col size="4"></ion-col>
@@ -201,12 +209,63 @@
     <ion-row class="show">
       <ion-col size="4"></ion-col>
       <ion-col class="" size="4" size-lg>
-        <ion-button color="danger" shape="round" (click)="logout()" class="register bold" expand="block">CERRAR
-          SESIÓN
+        <ion-button color="danger" shape="round" (click)="logout()" class="register bold" expand="block">
+          CERRAR SESIÓN
         </ion-button>
       </ion-col>
       <ion-col size="4"></ion-col>
     </ion-row>
 
+    <ion-row class="data">
+      <ion-col size="1"></ion-col>
+      <ion-col class="" size="10" size-lg>
+        <ion-row class="inputs">
+          <ion-col size="1.5">
+            <ion-icon class="center-element icon" name="time-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10.5">
+            La sesión caduca en {{minutes}} minutos.
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+
+    <ion-row class="show">
+      <ion-col size="4"></ion-col>
+      <ion-col size="4" class="no_padding ">
+        <ion-row class="inputs">
+          <ion-col size="1.5">
+            <ion-icon class="center-element icon" name="time-outline"></ion-icon>
+          </ion-col>
+          <ion-col size="10.5">
+            La sesión caduca en {{minutes}} minutos.
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="4"></ion-col>
+    </ion-row>
+
+    <ion-row class="data">
+      <ion-col size="1"></ion-col>
+      <ion-col class="" size="10" size-lg>
+        <ion-button color="success" shape="round" [disabled]="minutes>5" (click)="renoveSession()" class="register bold"
+          expand="block">
+          RENOVAR SESIÓN
+        </ion-button>
+      </ion-col>
+      <ion-col size="1"></ion-col>
+    </ion-row>
+
+    <ion-row class="show">
+      <ion-col size="4"></ion-col>
+      <ion-col class="" size="4" size-lg>
+        <ion-button color="success" shape="round" [disabled]="minutes>5" (click)="renoveSession()" class="register bold"
+          expand="block">
+          RENOVAR SESIÓN
+        </ion-button>
+      </ion-col>
+      <ion-col size="4"></ion-col>
+    </ion-row>
   </div>
 </ion-content>

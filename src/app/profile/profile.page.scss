@@ -1,21 +1,25 @@
 @import url("../app.component.scss");
 
 .back {
-    overflow: hidden;
-    background-attachment: fixed;
-    background-image: url("../../assets/backs/bg_splash_screen.png");
+  overflow: scroll;
+  background-attachment: fixed;
+  background-image: url("../../assets/backs/bg_splash_screen.png");
 }
 
 .icon {
-    position: relative;
-    color: blue;
-    width: 80%;
-    height: 80%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: relative;
+  color: blue;
+  width: 80%;
+  height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .inactive {
-    color: gray;
+  color: gray;
+}
+
+.float {
+  border-radius: 25px;
 }
