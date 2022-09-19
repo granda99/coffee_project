@@ -138,12 +138,21 @@ export class SettingsPage implements OnInit {
   async changeStatus(item, from) {
     const response = await this.nodos.changeStatusDevice({ isActive: item.isActive }, item.key).toPromise();
 
-    console.log(from);
-
     if (response.isActive) {
       this.share.showToastColor('', 'El dispositivo: ' + item.nombre + ' está encendido', 's', 's')
     } else {
       this.share.showToastColor('', 'El dispositivo: ' + item.nombre + ' está apagado', 'd', 's')
     }
+  }
+
+  async deletedevice(keydevice) {
+    let resp = await this.share.confirmQuestion('Alerta!!', '¿Está seguro de eliminar permanentemente el dispositivo de su lista?');
+
+    if (resp) {
+      const response = await this.nodos.removeDevice(keydevice).toPromise();
+      await this.loadDevices();
+      this.share.showToastColor('Confirmación', 'Se eliminó el dispositivo correctamente', 's', 'm')
+    } else
+      this.share.showToastColor('Cancelado', 'Se canceló la eliminación del dispositivo', 'w', 'm')
   }
 }

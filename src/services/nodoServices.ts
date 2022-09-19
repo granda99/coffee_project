@@ -4,63 +4,74 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class nodoServices {
-    public url: string
+  public url: string
 
-    constructor(
-        private _http: HttpClient
-    ) {
-        this.url = environment.firebaseConfig.databaseURL;
-    }
+  constructor(
+    private _http: HttpClient
+  ) {
+    this.url = environment.firebaseConfig.databaseURL;
+  }
 
-    addNewDevice(data): Observable<any> {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        let uid = user.uid;
-        let token = user.stsTokenManager.accessToken;
+  addNewDevice(data): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    let uid = user.uid;
+    let token = user.stsTokenManager.accessToken;
 
-        const $URL = `${this.url}/dispositivos/${uid}.json`;
+    const $URL = `${this.url}/dispositivos/${uid}.json`;
 
-        return this._http.post<any>($URL, data);
-    }
+    return this._http.post<any>($URL, data);
+  }
 
-    getInformacion(): Observable<any> {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        let uid = user.uid;
-        let token = user.stsTokenManager.accessToken;
+  getInformacion(limit): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    let uid = user.uid;
+    let token = user.stsTokenManager.accessToken;
 
-        const $URL = `${this.url}/registro_nodos/${uid}.json?auth=${token}`;
+    let $URL;
+    if (limit <= 0)
+      $URL = `${this.url}/registro_nodos/${uid}.json?auth=${token}`;
+    else
+      $URL = `${this.url}/registro_nodos/${uid}.json?auth=${token}&orderBy="dispositivo"&limitToLast=${limit}&print=pretty`;
 
-        return this._http.get<any>($URL);
-    }
+    return this._http.get<any>($URL);
+  }
 
-    getDevicesStatus(): Observable<any> {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        let uid = user.uid;
-        let token = user.stsTokenManager.accessToken;
+  getDevicesStatus(): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    let uid = user.uid;
+    let token = user.stsTokenManager.accessToken;
 
-        const $URL = `${this.url}/dispositivos/${uid}.json?auth=${token}`;
+    const $URL = `${this.url}/dispositivos/${uid}.json?auth=${token}`;
 
-        return this._http.get<any>($URL);
-    }
+    return this._http.get<any>($URL);
+  }
 
-    changeStatusDevice(data, key): Observable<any> {
-        const user = JSON.parse(sessionStorage.getItem('user'));
-        let uid = user.uid;
-        let token = user.stsTokenManager.accessToken;
+  changeStatusDevice(data, key): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    let uid = user.uid;
+    let token = user.stsTokenManager.accessToken;
 
-        const $URL = `${this.url}/dispositivos/${uid}/${key}.json`;
+    const $URL = `${this.url}/dispositivos/${uid}/${key}.json?auth=${token}`;
 
-        return this._http.patch<any>($URL, data);
-    }
+    return this._http.patch<any>($URL, data);
+  }
+
+  removeDevice(keydevice): Observable<any> {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    let uid = user.uid;
+    let token = user.stsTokenManager.accessToken;
+
+    const $URL = `${this.url}/dispositivos/${uid}/${keydevice}.json?auth=${token}`;
+
+    return this._http.delete<any>($URL);
+  }
 }
 
 export interface Months {
-    HT: number;
-    PH: number;
-    HA: number;
-    TA: number;
-    LA: number;
-    PA: number
+  HT: number;
+  TA: number;
+  PA: number
 }

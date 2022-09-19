@@ -119,6 +119,7 @@ export class UserService {
       photoURL: user.photoURL,
       telf: user.telf,
       fechaNacimiento: user.fechaNacimiento,
+      notify_token: user.notify_token,
     }
 
     sessionStorage.setItem('infoUser', JSON.stringify(data));
@@ -155,4 +156,5 @@ export interface Datos {
   photoURL;
   telf;
   fechaNacimiento;
+  notify_token;
 }

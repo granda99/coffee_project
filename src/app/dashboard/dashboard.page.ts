@@ -1,13 +1,13 @@
-import { AfterViewInit, Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import { nodoServices } from 'src/services/nodoServices';
 import { labelsParams, PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { SwiperOptions } from 'swiper';
-import { InfoCardComponent } from '../components/infoCard/infoCard.component';
 
 import SwiperCore, { Autoplay, Keyboard, Pagination, Scrollbar, Zoom } from 'swiper';
+
 SwiperCore.use([Autoplay, Keyboard, Pagination, Scrollbar, Zoom]);
 
 
@@ -64,12 +64,22 @@ export class DashboardPage implements OnInit {
   lineChart: any;
   polarArea: any;
 
+  public hasNotification = false;
+  private isDesk = false;
+
   constructor(
     private nodos: nodoServices,
     private share: SharedService,
     private platform: Platform,
-    private router: Router
+    private router: Router,
+    private platafrom: Platform,
   ) {
+
+    for (let plat of platafrom.platforms()) {
+      if (plat == "desktop")
+        this.isDesk = true;
+    }
+
     this.platform.backButton.subscribeWithPriority(PRIORIDAD, async () => {
       if (this.router.url == '/tabs/dashboard')
         this.share.logout();
@@ -77,8 +87,8 @@ export class DashboardPage implements OnInit {
 
   }
   ngOnInit() {
+    this.hasNotification = this.share.hasNotification.getValue();
   }
-
 
   // Cuando intentamos llamar a nuestro gráfico para inicializar métodos en ngOnInit(),
   // muestra un error nativeElement de undefined. Por lo tanto, debemos llamar a todos
@@ -279,12 +289,12 @@ export class DashboardPage implements OnInit {
     try {
       let jsonObj
       if (sessionStorage.getItem('metricas') == null || sessionStorage.getItem('metricas') == '') {
-        const response = await this.nodos.getInformacion().toPromise();
+        const response = await this.nodos.getInformacion(0).toPromise();
         sessionStorage.setItem('metricas', JSON.stringify(response))
-        jsonObj = response;
-      } else {
-        jsonObj = JSON.parse(sessionStorage.getItem('metricas'));
       }
+      const response = await this.nodos.getInformacion(10).toPromise();
+      jsonObj = response
+
       if (jsonObj)
         this.calcularValores(jsonObj);
 
@@ -370,14 +380,9 @@ export class DashboardPage implements OnInit {
   };
 
   async doRefresh(ev) {
-    sessionStorage.removeItem('metricas')
     await this.getData()
     this.barChartMethod();
     this.doughnutChartMethod();
     ev.target.complete();
-  }
-
-  presentInfo() {
-    this.share.presentPopover(InfoCardComponent);
   }
 }

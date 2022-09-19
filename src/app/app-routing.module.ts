@@ -27,11 +27,15 @@ const routes: Routes = [
   {
     path: 'welcome',
     loadChildren: () => import('./welcome/welcome.module').then(m => m.WelcomePageModule)
-  },  {
+  },
+  {
     path: 'new-device',
-    loadChildren: () => import('./components/new-device/new-device.module').then( m => m.NewDevicePageModule)
+    loadChildren: () => import('./components/new-device/new-device.module').then(m => m.NewDevicePageModule)
+  },
+  {
+    path: 'real-time',
+    loadChildren: () => import('./real-time/real-time.module').then(m => m.RealTimePageModule)
   }
-
 ];
 @NgModule({
   imports: [
@@ -39,4 +43,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
