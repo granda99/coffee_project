@@ -14,10 +14,6 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() { }
 
-  showClick() {
-    console.log('Click');
-  }
-
   toggle() {
     this.menu.toggle();
   }

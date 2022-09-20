@@ -96,6 +96,7 @@ export class ReportingPage implements OnInit {
   }
 
   ngOnInit() {
+    this.menu.enable(true);
   }
 
   toggle() {
@@ -103,7 +104,13 @@ export class ReportingPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    //this.menu.enable(true);
+    //this.menu.swipeGesture(true);
     await this.getData();
+  }
+
+  ionViewDidLeave() {
+    //this.menu.swipeGesture(false);
   }
 
   async getData() {

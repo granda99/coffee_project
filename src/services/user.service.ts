@@ -128,13 +128,8 @@ export class UserService {
 
   onIdTokenRevocation(): Observable<any> {
     const $URL = `${this.urlRefresh}${this.apiToken}`;
-    /* let renove = new FormData;
-     renove.append('grant_type', 'refresh_token');
-     renove.append('refresh_token', (JSON.parse(sessionStorage.getItem('user')).stsTokenManager.refreshToken));*/
 
     let renove = "grant_type=refresh_token&refresh_token=" + JSON.parse(sessionStorage.getItem('user')).stsTokenManager.refreshToken;
-
-    console.log(renove);
 
     return this._http.post<any>($URL, renove, HTTP_OPTIONS_FORM);
   }

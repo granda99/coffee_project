@@ -231,6 +231,7 @@ export class SharedService {
   async logoutAuth(): Promise<void> {
     await this.afAuth.signOut();
     sessionStorage.clear();
+    localStorage.clear();
   }
 
   async showToast(msg: string) {
@@ -486,9 +487,34 @@ export class SharedService {
       }
       return date;
     }
+    let dia
+    let mes
+    if (d[0] > 12) {
+      if ((d[0]).length == 2)
+        dia = d[0];
+      else
+        dia = '0' + d[0];
+
+      if ((d[1]).length == 2)
+        mes = d[1];
+      else
+        mes = '0' + d[1];
+    }
+    else {
+      if ((d[1]).length == 2)
+        dia = d[1];
+      else
+        dia = '0' + d[1];
+
+      if ((d[0]).length == 2)
+        mes = d[0];
+      else
+        mes = '0' + d[0];
+    }
+
     let date = {
-      dia: parseInt((d[1])),
-      mes: parseInt(d[0]),
+      dia: dia,
+      mes: mes,
       año: parseInt(d[2])
     }
 
@@ -498,10 +524,18 @@ export class SharedService {
   toFormatPoopDate(date) {
     let f = this.jsonDate(date);
 
-    if ((f.mes + '').length == 2)
+    console.log(f.mes.length);
+
+    //if (f.mes <= 12)
+    if (f.mes.length == 2)
       return f.año + '-' + f.mes + '-' + f.dia
     else
       return f.año + '-' + '0' + f.mes + '-' + f.dia
+    /*else
+      if ((f.dia + '').length == 2)
+        return f.año + '-' + f.dia + '-' + f.mes
+      else
+        return f.año + '-' + '0' + f.dia + '-' + f.mes*/
   }
 
   toShortDate(dato) {

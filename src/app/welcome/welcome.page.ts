@@ -23,7 +23,7 @@ export class WelcomePage implements OnInit {
     setTimeout(() => {
       this.readyLogin();
     }, 4000);
-    this.menuCtrl.enable(false);
+    this.menuCtrl.enable(true);
     this.menuCtrl.swipeGesture(false);
   }
 

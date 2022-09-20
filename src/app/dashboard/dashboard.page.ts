@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import { nodoServices } from 'src/services/nodoServices';
 import { labelsParams, PRIORIDAD, SharedService } from 'src/services/shared.services';
@@ -68,6 +68,7 @@ export class DashboardPage implements OnInit {
   private isDesk = false;
 
   constructor(
+    private menu: MenuController,
     private nodos: nodoServices,
     private share: SharedService,
     private platform: Platform,
@@ -94,6 +95,7 @@ export class DashboardPage implements OnInit {
   // muestra un error nativeElement de undefined. Por lo tanto, debemos llamar a todos
   //los métodos de gráfico en ngAfterViewInit() donde se resolverán @ViewChild y @ViewChildren.
   async ionViewWillEnter() {
+    this.menu.swipeGesture(false);
     this.getDate();
     await this.getData();
     this.barChartMethod();

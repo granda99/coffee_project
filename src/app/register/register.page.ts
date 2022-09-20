@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 
@@ -12,6 +12,7 @@ import { UserService } from 'src/services/user.service';
 export class RegisterPage implements OnInit {
 
   constructor(
+    private menu: MenuController,
     private authService: UserService,
     private share: SharedService,
     private router: Router,
@@ -25,6 +26,10 @@ export class RegisterPage implements OnInit {
   public isView: Boolean = false;
   public isView1: Boolean = false;
   public loginObj;
+
+  ionViewWillEnter() {
+    this.menu.swipeGesture(false);
+  }
 
   ngOnInit() {
     this.loginObj = {

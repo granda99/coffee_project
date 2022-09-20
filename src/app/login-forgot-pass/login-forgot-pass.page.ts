@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 
@@ -14,6 +14,7 @@ export class LoginForgotPassPage implements OnInit {
   email
 
   constructor(
+    private menu: MenuController,
     private authService: UserService,
     private share: SharedService,
     private router: Router,
@@ -24,6 +25,9 @@ export class LoginForgotPassPage implements OnInit {
     });
   }
 
+  ionViewWillEnter() {
+    this.menu.swipeGesture(false);
+  }
   ngOnInit() {
   }
 

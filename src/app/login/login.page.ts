@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 
@@ -12,6 +12,7 @@ import { UserService } from 'src/services/user.service';
 export class LoginPage implements OnInit {
 
   constructor(
+    private menu: MenuController,
     private authService: UserService,
     private share: SharedService,
     private route: Router,
@@ -21,9 +22,14 @@ export class LoginPage implements OnInit {
       navigator['app'].exitApp();
     });
   }
+  activeSession: Boolean = false;
   public isView: Boolean = false;
   public loginObj;
 
+  ionViewWillEnter() {
+    this.menu.swipeGesture(false);
+    this.fastLogin();
+  }
   ngOnInit() {
     this.loginObj = {
       email: '',
@@ -55,6 +61,8 @@ export class LoginPage implements OnInit {
         if (user) {
           await this.route.navigate(['/tabs/dashboard']).then(r => { });
           sessionStorage.setItem('user', JSON.stringify(user));
+          if (this.activeSession)
+            localStorage.setItem('user', this.share.encodeInfo(user));
           this.share.showToastColor('', 'Bienvenido de nuevo ' + user.email, 's', 'm');
         }
         this.share.stopLoading();
@@ -66,6 +74,44 @@ export class LoginPage implements OnInit {
       this.share.stopLoading();
       let msg = this.share.getMessageError(ex.code);
       this.share.showToastColor('', msg, 'd', 'm')
+    }
+  }
+
+  async fastLogin() {
+    try {
+      if (localStorage.getItem('user')) {
+        await this.share.startLoading();
+
+        let tokens = this.share.decodeInfo(localStorage.getItem('user'));
+        if (tokens) {
+          this.activeSession = true;
+          sessionStorage.setItem('user', JSON.stringify(tokens));
+
+          const response = await this.authService.onIdTokenRevocation().toPromise();
+
+          let newStsTokenManager = {
+            refreshToken: response.refresh_token,
+            accessToken: response.access_token,
+            expirationTime: this.share.setTimeExpire()
+          }
+
+          let user = JSON.parse(sessionStorage.getItem('user'));
+          user.stsTokenManager = newStsTokenManager;
+          sessionStorage.setItem('user', JSON.stringify(user));
+
+          await this.route.navigate(['/tabs/dashboard']).then(r => { });
+
+          this.share.showToastColor('Auto-Login', 'Bienvenido de nuevo ' + user.email, 's', 'm');
+        }
+      }
+    } catch (ex) {
+      this.share.showToastColor('Erorr!!', 'No pudo renovarse la sesión, vuelva a iniciar', 'd', 'm');
+      localStorage.clear();
+      sessionStorage.clear();
+      console.log(ex);
+    } finally {
+      if (localStorage.getItem('user'))
+        this.share.stopLoading();
     }
   }
 

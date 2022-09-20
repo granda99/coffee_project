@@ -88,9 +88,14 @@ export class RealTimePage implements OnInit {
     }
   }
 
+  ionViewWillEnter() {
+    this.menu.swipeGesture(true);
+  }
+
   async ngOnInit() {
     this.getMaxHoursOptions();
-    this.menu.swipeGesture(false);
+    this.menu.enable(true);
+    this.menu.swipeGesture(true);
     await this.share.startLoading();
     await this.getData();
     this.share.stopLoading();
@@ -103,6 +108,12 @@ export class RealTimePage implements OnInit {
       this.executeAsyncTask();
 
   }
+
+
+  ionViewDidLeave() {
+    clearInterval(this.realTimeExecution);
+  }
+
 
   getMaxHoursOptions() {
     for (let cont = 0; cont < this.maxHoras; cont++) {
@@ -118,9 +129,6 @@ export class RealTimePage implements OnInit {
     try {
       this.lastRows = [];
       let response: any;
-
-      console.log('Se ejecutó');
-
       if (this.type != 'RE') {
         response = await this.nodos.getInformacion(300).toPromise();
         Object.keys(response).forEach((k) => {
@@ -146,7 +154,7 @@ export class RealTimePage implements OnInit {
         let jsonDate = this.share.jsonDate(this.dateFilter);
 
         if (now.año == jsonDate.año && now.mes == jsonDate.mes && now.dia == jsonDate.dia)
-          response = await this.nodos.getInformacion(100).toPromise();
+          response = await this.nodos.getInformacion(700).toPromise();
         else
           response = JSON.parse(sessionStorage.getItem('metricas'));
 
@@ -167,7 +175,6 @@ export class RealTimePage implements OnInit {
             this.lastRows.push(newEntry);
           }
         });
-
       }
     } catch (ex) {
       if (ex.status) {
@@ -264,7 +271,6 @@ export class RealTimePage implements OnInit {
   async updateDataChart() {
     this.updateExecute++;
     if (this.updateExecute < 2) {
-      console.log('Se actualiza');
       await this.getData();
       if (this.type != 'RE') {
         this.prepareInfoRows();
@@ -291,17 +297,13 @@ export class RealTimePage implements OnInit {
       ev.target.complete();
   }
 
-  ionViewWillLeave() {
-    clearInterval(this.realTimeExecution);
-  }
-
   executeAsyncTask() {
     clearInterval(this.realTimeExecution);
     this.realTimeExecution = setInterval(() => { this.executeRealTime() }, Number(this.timeExecution) * 1000);
   }
 
   executeRealTime() {
-    console.log("Ha pasado " + (this.timeExecution) + " segundos.", new Date());
+    //console.log("Ha pasado " + (this.timeExecution) + " segundos.", new Date());
     this.updateDataChart();
   }
 

@@ -4,6 +4,12 @@
   background-image: url("../../assets/backs/bg_splash_screen.png");
 }
 
+.menu {
+  --background: var(--ion-toolbar-background, var(--ion-background-color, #fff));
+  --color: var(--ion-toolbar-color, var(--ion-text-color, #424242));
+  border: none !important;
+}
+
 .menu-back {
   background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
   //color: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));

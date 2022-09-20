@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { nodoServices } from 'src/services/nodoServices';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
@@ -22,7 +22,7 @@ export class SettingsPage implements OnInit {
   public viewInfo: boolean = true;
 
   constructor(
-    private authService: UserService,
+    private menu: MenuController,
     private share: SharedService,
     private nodos: nodoServices,
     private user: UserService,
@@ -36,6 +36,7 @@ export class SettingsPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.menu.swipeGesture(false);
     this.loadDataConfig();
     this.loadDevices();
   }

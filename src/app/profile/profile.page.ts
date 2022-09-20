@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ActionSheetController, Platform } from '@ionic/angular';
+import { ActionSheetController, MenuController, Platform } from '@ionic/angular';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 import { FotoModalComponent } from '../foto-modal/foto-modal.component';
@@ -28,6 +28,7 @@ export class ProfilePage implements OnInit {
   showCalendar: boolean = false;
 
   constructor(
+    private menu: MenuController,
     private share: SharedService,
     private user: UserService,
     public actionSheetController: ActionSheetController,
@@ -64,6 +65,8 @@ export class ProfilePage implements OnInit {
   };
 
   ionViewWillEnter() {
+    this.menu.swipeGesture(false);
+
     this.infoUser = JSON.parse(sessionStorage.getItem('infoUser'));
     if (!this.infoUser.telf)
       this.infoUser.telf = "";
@@ -194,7 +197,6 @@ export class ProfilePage implements OnInit {
   async renoveSession() {
     try {
       const response = await this.authServ.onIdTokenRevocation().toPromise();
-      console.log(response);
 
       let newStsTokenManager = {
         refreshToken: response.refresh_token,
@@ -226,15 +228,12 @@ export class ProfilePage implements OnInit {
 
     var dif = (expire.getTime() - now.getTime());
     this.minutes = Math.round((dif / 1000) / 60);
-    console.log(this.minutes);
   }
 
   valtel(tel) {
     var numbers = /[0-9]/;
     let initel = tel.target.value[0];
     let fintel = tel.target.value;
-
-    console.log(fintel);
     let copia = "";
     for (let x = 0; x < fintel.length; x++) {
       let y = "";
@@ -244,8 +243,6 @@ export class ProfilePage implements OnInit {
         console.log(y);
         copia += y;
       } else {
-        console.log('se elimino caracter');
-        console.log('else', y);
         this.share.showToastColor("¡Alerta!", "¡En el campo teléfono solo se aceptan números! y el formato +593 XXX XXX XXXX ó 0XX XXX XXXX", "w", "m");
       }
     }
@@ -270,10 +267,6 @@ export class ProfilePage implements OnInit {
     if (error)
       this.share.showToastColor("¡Alerta!", "¡En el campo teléfono solo se aceptan 13 caracteres en el formato +593 XXX XXX XXXX y 10 en el formato 0XX XXX XXXX!", "w", "m");
 
-    console.log('this.infoUser.telf', this.infoUser.telf);
-    console.log('tel.target.value', tel.target.value);
-
-    //tel.focus();
     return false;
   }
 }

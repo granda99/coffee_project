@@ -2,7 +2,9 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <!-- <ion-back-button></ion-back-button> -->
-      <ion-icon name="menu-outline" (click)="toggle()"></ion-icon>
+      <ion-button class="menu" (click)="toggle()">
+        <ion-icon name="menu-outline" (click)="toggle()"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="doRefresh($event)" class="button" slot="end">
@@ -106,7 +108,7 @@
       <ion-card style="min-width: 100%; margin: 0;">
         <ion-card-header lass="options">
           <ion-row>
-            <ion-item button="true" id="open-date-fechaInit-rows">
+            <ion-item button="true" id="open-date-fechaInit-rows" style="margin-right: 2%;">
               <ion-label>Fecha:</ion-label>
               <ion-icon slot="start" class="red" name="calendar-outline"></ion-icon>
               <ion-text slot="end">{{ dateFilter }}</ion-text>
@@ -118,6 +120,9 @@
                   </ion-datetime>
                 </ng-template>
               </ion-popover>
+            </ion-item>
+            <ion-item>
+              <ion-label>Registros: {{lastRows.length}} </ion-label>
             </ion-item>
             <ion-col size="12"> <br> </ion-col>
           </ion-row>
