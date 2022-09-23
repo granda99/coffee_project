@@ -17,13 +17,15 @@
             <h6>Clave de configuración</h6>
           </ion-col>
           <ion-col size="1.5" size-lg>
-            <ion-icon [hidden]="viewKey" (click)="showKey()" class="center-element icon" name="chevron-up-outline">
+            <ion-icon [hidden]="viewKey" (click)="showKey()" class="center-element icon icon-size"
+              name="chevron-up-outline">
             </ion-icon>
-            <ion-icon [hidden]="!viewKey" (click)="showKey()" class="center-element icon" name="chevron-down-outline">
+            <ion-icon [hidden]="!viewKey" (click)="showKey()" class="center-element icon icon-size"
+              name="chevron-down-outline">
             </ion-icon>
           </ion-col>
           <ion-col size="1.5" size-lg>
-            <ion-icon class="center-element icon" (click)="showInfo()" name="help-circle-outline"></ion-icon>
+            <ion-icon class="center-element icon icon-size" (click)="showInfo()" name="help-circle-outline"></ion-icon>
           </ion-col>
           <ion-col size="1" size-lg class="hidden"></ion-col>
         </ion-row>
@@ -31,8 +33,11 @@
 
           <!-- KEY CONFIG -->
           <ion-col size="1" size-lg [hidden]="viewKey" class="hidden"></ion-col>
-          <ion-col size="10" size-lg class="center back-info" [hidden]="viewKey">
+          <ion-col size="9" size-lg class="center back-info" [hidden]="viewKey">
             <p> {{uid}} </p>
+          </ion-col>
+          <ion-col size="1" size-lg [hidden]="viewKey" class="hidden">
+            <ion-icon (click)="copyText(uid)" class="center-element icon icon-size" name="copy-outline"></ion-icon>
           </ion-col>
           <ion-col size="1" size-lg [hidden]="viewKey" class="hidden"></ion-col>
         </ion-row>
@@ -52,7 +57,7 @@
             <h5>Mis dispositivos</h5>
           </ion-col>
           <ion-col size="1.5" size-lg>
-            <ion-icon (click)="showAddDevice()" class="center-element icon" name="add-outline"></ion-icon>
+            <ion-icon (click)="showAddDevice()" class="center-element icon icon-size" name="add-outline"></ion-icon>
           </ion-col>
           <ion-col size="1" size-lg class="hidden"></ion-col>
         </ion-row>
@@ -70,14 +75,13 @@
                   </ion-icon>
                 </ion-item>
               </ion-col>
-              <ion-col *ngIf="expanded[i]" size="12" size-lg>
+              <ion-col class="info-device" *ngIf="expanded[i]" size="12" size-lg>
                 <ion-item style="padding-left: 2%; padding-right: 2%;">
                   <p> Última actualización el {{item.lastDate || '00/00/00'}}, a las {{item.lasthour || '00:00'}}
                   </p>
 
                   <ion-icon slot="end" class="error show" name="power-outline"></ion-icon>
-                  <ion-toggle slot="end" class="show" (ionChange)="changeStatus(item, 'show')"
-                    [(ngModel)]="item.isActive">
+                  <ion-toggle slot="end" class="show" (ionChange)="changeStatus(item)" [(ngModel)]="item.isActive">
                   </ion-toggle>
                   <ion-icon slot="end" class="connect show" name="power-outline"></ion-icon>
 
@@ -86,18 +90,18 @@
                   <p>
                     KeyDevice: <br> {{item.key}}
                   </p>
+                  <ion-icon slot="end" (click)="copyText(item.key)" class="icon" name="copy-outline"></ion-icon>
+
                   <ion-icon slot="end" class="error" name="trash-outline" (click)="deletedevice(item.key)"></ion-icon>
                 </ion-item>
 
                 <ion-item class="data" style="padding-left: 2%; padding-right: 2%;">
                   <ion-icon slot="end" class="error" name="power-outline"></ion-icon>
-                  <ion-toggle slot="end" class="data" (ionChange)="changeStatus(item,  'data')"
-                    [(ngModel)]="item.isActive">
+                  <ion-toggle slot="end" class="data" (ionChange)="changeStatus(item)" [(ngModel)]="item.isActive">
                   </ion-toggle>
                   <ion-icon slot="end" class="connect" name="power-outline"></ion-icon>
                 </ion-item>
               </ion-col>
-
             </ion-row>
           </ion-col>
           <ion-col size="1" size-lg class="hidden"></ion-col>

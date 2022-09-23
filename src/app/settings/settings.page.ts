@@ -138,7 +138,7 @@ export class SettingsPage implements OnInit {
     this.loadDevices();
   }
 
-  async changeStatus(item, from) {
+  async changeStatus(item) {
     const response = await this.nodos.changeStatusDevice({ isActive: item.isActive }, item.key).toPromise();
 
     if (response.isActive) {
@@ -170,5 +170,11 @@ export class SettingsPage implements OnInit {
 
   ionViewDidLeave() {
     clearInterval(this.realTimeExecution);
+  }
+
+  copyText(text) {
+    //console.log(text);
+    navigator.clipboard.writeText(text);
+    this.share.showToast('!Clave copiada en portapapeles...¡');
   }
 }

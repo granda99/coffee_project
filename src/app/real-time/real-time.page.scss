@@ -8,6 +8,8 @@
   --background: var(--ion-toolbar-background, var(--ion-background-color, #fff));
   --color: var(--ion-toolbar-color, var(--ion-text-color, #424242));
   border: none !important;
+  background: var(--ion-toolbar-background, var(--ion-background-color, #fff)) !important;
+
 }
 
 .menu-back {

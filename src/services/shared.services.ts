@@ -237,8 +237,10 @@ export class SharedService {
   async showToast(msg: string) {
     const toast = await this.toastController.create({
       message: msg,
-      duration: 4000,
+      icon: 'checkmark-circle-outline',
+      duration: 2000,
       position: 'top',
+      color: 'success',
     });
     toast.present();
   }
