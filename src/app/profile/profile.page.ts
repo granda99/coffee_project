@@ -240,7 +240,6 @@ export class ProfilePage implements OnInit {
 
       y = fintel[x];
       if (y.match(numbers) || (y == "+" && x == 0)) {
-        console.log(y);
         copia += y;
       } else {
         this.share.showToastColor("¡Alerta!", "¡En el campo teléfono solo se aceptan números! y el formato +593 XXX XXX XXXX ó 0XX XXX XXXX", "w", "m");

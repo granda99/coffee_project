@@ -467,8 +467,12 @@ export class SharedService {
 
   getDateNow() {
     let fecha = new Date();
+
+    let date = fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
+    if ((fecha.getMonth() + 1) < 10)
+      date = fecha.getDate() + '/' + '0' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear();
     let all = {
-      fecha: fecha.getDate() + '/' + (fecha.getMonth() + 1) + '/' + fecha.getFullYear(),
+      fecha: date,
       hora: fecha.getHours() + ':' + fecha.getMinutes()
     }
 
@@ -523,19 +527,10 @@ export class SharedService {
 
   toFormatPoopDate(date) {
     let f = this.jsonDate(date);
-
-    console.log(f.mes.length);
-
-    //if (f.mes <= 12)
     if (f.mes.length == 2)
       return f.año + '-' + f.mes + '-' + f.dia
     else
       return f.año + '-' + '0' + f.mes + '-' + f.dia
-    /*else
-      if ((f.dia + '').length == 2)
-        return f.año + '-' + f.dia + '-' + f.mes
-      else
-        return f.año + '-' + '0' + f.dia + '-' + f.mes*/
   }
 
   toShortDate(dato) {

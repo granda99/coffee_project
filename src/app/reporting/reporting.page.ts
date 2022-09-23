@@ -104,13 +104,10 @@ export class ReportingPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    //this.menu.enable(true);
-    //this.menu.swipeGesture(true);
     await this.getData();
   }
 
   ionViewDidLeave() {
-    //this.menu.swipeGesture(false);
   }
 
   async getData() {
@@ -165,7 +162,6 @@ export class ReportingPage implements OnInit {
     switch (type) {
       case 'Rango':
         let fin = this.share.jsonDate(this.fechaFin);
-        /* let i = new Date(inicio.mes + '/' + inicio.dia + '/' + inicio.año); */
         let f = new Date(fin.mes + '/' + fin.dia + '/' + fin.año);
 
         if (i.getTime() > hoy.getTime()) {
@@ -325,9 +321,6 @@ export class ReportingPage implements OnInit {
   }
 
   lineChartMethod() {
-    /*     if (this.lineChart) {
-          this.lineChart.clear()
-        } */
     this.showReportInfo = false;
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
@@ -475,7 +468,8 @@ export class ReportingPage implements OnInit {
   async doRefresh(ev) {
     sessionStorage.removeItem('metricas')
     await this.getData()
-    ev.target.complete();
+    if (ev.type == 'ionRefresh')
+      ev.target.complete();
   }
 
   doughnutChartMethod() {

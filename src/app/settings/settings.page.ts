@@ -21,6 +21,9 @@ export class SettingsPage implements OnInit {
   public viewKey: boolean = true;
   public viewInfo: boolean = true;
 
+  private realTimeExecution;
+
+
   constructor(
     private menu: MenuController,
     private share: SharedService,
@@ -41,10 +44,8 @@ export class SettingsPage implements OnInit {
     this.loadDevices();
   }
 
-  async ngOnInit() {
-    const response = await this.user.onIdTokenRevocation();
-    console.log(response);
-
+  ngOnInit() {
+    this.executeAsyncTask()
   }
 
   loadDataConfig() {
@@ -83,7 +84,6 @@ export class SettingsPage implements OnInit {
         this.expanded[x] = false;
         this.disconect[x] = this.isConnect(x);
       }
-
     } catch (ex) {
       if (ex.status == 401) {
         //this.authServ.onIdTokenRevocation();
@@ -113,8 +113,7 @@ export class SettingsPage implements OnInit {
       var horaMinut = nodo.lasthour.split(':')
 
       if (ultimo.dia + '/' + ultimo.mes + '/' + ultimo.año == hoy.fecha) {
-
-        if (f.getHours() == horaMinut[0])
+        if (f.getHours() == horaMinut[0] && ((f.getMinutes() - horaMinut[1]) < 10))
           return true;
         else
           return false;
@@ -126,7 +125,10 @@ export class SettingsPage implements OnInit {
   }
 
   async doRefresh(ev) {
+    await this.share.startLoading();
     await this.loadDevices();
+    this.share.stopLoading();
+
     ev.target.complete();
   }
 
@@ -155,5 +157,18 @@ export class SettingsPage implements OnInit {
       this.share.showToastColor('Confirmación', 'Se eliminó el dispositivo correctamente', 's', 'm')
     } else
       this.share.showToastColor('Cancelado', 'Se canceló la eliminación del dispositivo', 'w', 'm')
+  }
+
+  executeAsyncTask() {
+    clearInterval(this.realTimeExecution);
+    this.realTimeExecution = setInterval(() => { this.executeRealTime() }, 60 * 1000);
+  }
+
+  async executeRealTime() {
+    await this.loadDevices();
+  }
+
+  ionViewDidLeave() {
+    clearInterval(this.realTimeExecution);
   }
 }

@@ -303,7 +303,6 @@ export class RealTimePage implements OnInit {
   }
 
   executeRealTime() {
-    //console.log("Ha pasado " + (this.timeExecution) + " segundos.", new Date());
     this.updateDataChart();
   }
 
