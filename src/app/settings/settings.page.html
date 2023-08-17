@@ -32,11 +32,11 @@
         <ion-row>
 
           <!-- KEY CONFIG -->
-          <ion-col size="1" size-lg [hidden]="viewKey" class="hidden"></ion-col>
+          <ion-col size="1" size-lg [hidden]="viewKey"></ion-col>
           <ion-col size="9" size-lg class="center back-info" [hidden]="viewKey">
             <p> {{uid}} </p>
           </ion-col>
-          <ion-col size="1" size-lg [hidden]="viewKey" class="hidden">
+          <ion-col size="1" size-lg [hidden]="viewKey">
             <ion-icon (click)="copyText(uid)" class="center-element icon icon-size" name="copy-outline"></ion-icon>
           </ion-col>
           <ion-col size="1" size-lg [hidden]="viewKey" class="hidden"></ion-col>

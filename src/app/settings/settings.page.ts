@@ -5,6 +5,8 @@ import { nodoServices } from 'src/services/nodoServices';
 import { PRIORIDAD, SharedService } from 'src/services/shared.services';
 import { UserService } from 'src/services/user.service';
 import { NewDevicePage } from '../components/new-device/new-device.page';
+import { Clipboard } from '@capacitor/clipboard';
+
 
 @Component({
   selector: 'app-settings',
@@ -174,7 +176,8 @@ export class SettingsPage implements OnInit {
 
   copyText(text) {
     //console.log(text);
-    navigator.clipboard.writeText(text);
+    //navigator.clipboard.writeText(text);
+    Clipboard.write({ string: text });
     this.share.showToast('!Clave copiada en portapapeles...¡');
   }
 }

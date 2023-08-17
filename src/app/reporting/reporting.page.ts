@@ -625,7 +625,7 @@ export class ReportingPage implements OnInit {
           let kDate = this.share.jsonDate(this.jsonObj[key].fecha);
           let typeParams = this.jsonObj[key];
 
-          if (kDate.mes == mes && kDate.año == this.anio) {
+          if (Number(kDate.mes) == Number(mes) && kDate.año == this.anio) {
             this.filtro.push(this.jsonObj[key]);
             this.cont++;
             month.HT += parseFloat(typeParams.parametros_tierra.HT ?? 0);
@@ -643,6 +643,7 @@ export class ReportingPage implements OnInit {
       month.PA /= this.cont;
 
       this.meses.push(month);
+      this.cont = 0;
     }
 
     this.lineChartMethod();
